@@ -1,3 +1,6 @@
+# Library Output
+dist/
+
 # Logs
 logs
 *.log
@@ -105,4 +108,3 @@ typings/
 
 # TernJS port file
 .tern-port
-
