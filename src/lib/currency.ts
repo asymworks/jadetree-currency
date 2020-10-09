@@ -14,13 +14,7 @@
  */
 
 // Currency Data
-import ccyData from './ccy-data.ts';
-
-/**
- * Registry of Currency Objects
- * @private
- */
-const ccyRegistry = Object.create(null);
+import ccyData from './ccy-data';
 
 /**
  * ISO 4127 Currency Data Class
@@ -38,11 +32,9 @@ const ccyRegistry = Object.create(null);
  * instances.
  */
 class CurrencyData {
-  currencyCode: string;
-
-  numericCode: number;
-
-  precision: number;
+  readonly currencyCode: string;
+  readonly numericCode: number;
+  readonly precision: number;
 
   /**
    * Class Constructor
@@ -70,6 +62,12 @@ class CurrencyData {
 }
 
 /**
+ * Registry of Currency Objects
+ * @private
+ */
+const ccyRegistry: { [key: string]: CurrencyData } = Object.create(null);
+
+/**
  * Load a Currency Object from its ISO 4127 Code
  * @param {String|Number} code ISO 4127 Currency Code (string or numeric)
  * @return {CurrencyData} the Currency instance for the given currency code
@@ -89,14 +87,10 @@ function Currency(code: string | number | CurrencyData): CurrencyData {
     return ccyRegistry[code.toUpperCase()];
   }
   if (typeof code === 'number') {
-    let ccy;
-    // Iterate Registry to find Numeric Code
-    Object.keys(ccyRegistry).forEach((ccyCode) => {
-      if (ccyRegistry[ccyCode].numericCode === code) {
-        ccy = ccyRegistry[ccyCode];
-      }
-    });
-    if (ccy !== null) {
+    const ccy: CurrencyData | undefined = Object.values(ccyRegistry).find(
+      (c: CurrencyData) => c.numericCode === code
+    );
+    if (ccy) {
       return ccy;
     }
   }
@@ -121,7 +115,7 @@ function Currency(code: string | number | CurrencyData): CurrencyData {
 Currency.register = function registerCurrency(
   currencyCode: string,
   numericCode: number,
-  precision: number,
+  precision: number
 ) {
   const ucCode = currencyCode.toUpperCase();
   if (Object.prototype.hasOwnProperty.call(ccyRegistry, ucCode)) {
@@ -154,7 +148,7 @@ Currency.all = function allCurrencies() {
  * @return {Boolean} true if the obj is a CurrencyData instance
  * @static
  */
-Currency.isCurrency = function isCurrency(object: any) {
+Currency.isCurrency = function isCurrency(object: unknown) {
   return object instanceof CurrencyData;
 };
 
@@ -165,7 +159,6 @@ export default Currency;
 (function loadCurrencyData() {
   Object.keys(ccyData).forEach((ccy) => {
     const { n, p } = ccyData[ccy];
-
     Currency.register(ccy, n, p);
   });
 })();

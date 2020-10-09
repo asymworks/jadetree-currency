@@ -24,5 +24,12 @@ module.exports = {
     'import',
   ],
   rules: {
+    'import/extensions': ['error', { js: 'ignorePackages', ts: 'never' }],
+    'lines-between-class-members': 'off',
+  },
+  settings: {
+    'import/resolver': {
+      typescript: {},
+    },
   },
 };
