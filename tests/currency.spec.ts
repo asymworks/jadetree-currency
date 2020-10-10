@@ -1,7 +1,7 @@
 import { expect } from 'chai';
-import Currency from '../src/lib/currency';
+import Currency from '../src/currency';
 
-describe('nvlps-currency: Currency', function() {
+describe('Currency', function() {
   describe('Accessors', function() {
     it('should have a public accessor', function() {
       var testFn = function() { return Currency('XXX'); }
@@ -57,7 +57,7 @@ describe('nvlps-currency: Currency', function() {
       var testObj = Currency('XXX');
       expect(testObj).to.have.property('currencyCode', 'XXX');
       expect(testObj).to.have.property('numericCode', 999);
-      expect(testObj).to.have.property('precision', 6);
+      expect(testObj).to.have.property('precision', 0);
     });
 
     it('should throw an exception when an unknown Currency is accessed', function() {

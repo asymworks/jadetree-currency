@@ -11,10 +11,11 @@
   "private": false,
   "scripts": {
     "build": "rollup -c",
+    "build-data:ccy": "node scripts/gen_ccy_data.js -o src/lib/ccy-data.ts -l src/lib/ccy-list.ts",
     "docs:html": "documentation build src/**/*.ts -f html -o docs --parse-extension ts",
     "docs:md": "documentation build src/**/*.ts -f md --parse-extension ts",
+    "docs:serve": "documentation serve --watch src/**/*.ts --parse-extension ts",
     "lint": "eslint --ext .js,.ts src",
-    "serve:docs": "documentation serve src/**/*.ts --parse-extension ts",
     "test": "cross-env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha --require ts-node/register tests/**/*.ts --check-leaks --globals navigator,process"
   },
   "devDependencies": {
@@ -27,7 +28,10 @@
     "@types/mocha": "^8.0.3",
     "@typescript-eslint/eslint-plugin": "^4.4.0",
     "@typescript-eslint/parser": "^4.4.0",
+    "argparse": "^2.0.1",
     "chai": "^4.2.0",
+    "cldr-core": "^37.0.0",
+    "cldr-numbers-modern": "^37.0.0",
     "cross-env": "^7.0.2",
     "documentation": "^13.0.2",
     "eslint": "^7.10.0",
@@ -37,13 +41,19 @@
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-unicorn": "^22.0.0",
+    "lodash": "^4.17.20",
     "mocha": "^8.1.3",
+    "node-html-parser": "^1.3.1",
     "prettier": "^2.1.2",
     "rollup": "^2.29.0",
     "rollup-plugin-peer-deps-external": "^2.2.3",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.27.3",
     "ts-node": "^9.0.0",
-    "typescript": "^4.0.3"
+    "typescript": "^4.0.3",
+    "xml2js": "^0.4.23"
+  },
+  "dependencies": {
+    "decimal.js-light": "^2.5.1"
   }
 }

@@ -1,25 +1,9 @@
-/**
- * nvlps-currency Currency Library for nvlps.io
- *
- *   Copyright (c) 2020 Asymworks, LLC.
- *
- *   The nvlps-currency library may be freely distributed under the terms of
- *   the BSD license.  For all licensing information, details and documentation:
- *   https://nvlps.io/nvlps-currency
- *
- * nvlps-currency contains currency and money handling routines for the
- * nvlps.io budgeting software package.  It includes currency information for
- * most world currencies as well as localized formatting, currency symbols, and
- * currency names.
- */
-
-// Currency Data
 import ccyData from './ccy-data';
 
 /**
  * ISO 4127 Currency Data Class
  * @typedef CurrencyData
- * @type {Object}
+ * @hideconstructor
  * @property {String} currencyCode ISO 4127 Currency Code
  * @property {Number} numericCode  ISO 4127 Numeric Code
  * @property {Number} precision    Number of Fractional Digits
@@ -38,10 +22,7 @@ class CurrencyData {
 
   /**
    * Class Constructor
-   * @param {String} ccyCode      ISO 4127 Currency Code
-   * @param {Number} numericCode  ISO 4127 Numeric Code
-   * @param {Number} precision    Number of Fractional Digits
-   * @return {Currency} New Currency Object
+   * @private
    */
   constructor(ccyCode: string, numericCode: number, precision: number) {
     this.currencyCode = ccyCode;
@@ -99,24 +80,23 @@ function Currency(code: string | number | CurrencyData): CurrencyData {
 }
 
 /**
- * Define a new Currency Object
+ * Defines a new {@link CurrencyData} object if it does not already exist and
+ * enter it into the runtime currency registry, after which it can be accessed
+ * using the {@link Currency} function.
+ *
+ * If the currency already exists, an Error will be thrown.
+ *
  * @param {String} currencyCode ISO 4127 Currency Code
  * @param {Number} numericCode  ISO 4127 Numeric Code
  * @param {Number} precision    Number of Fractional Digits
  * @return {CurrencyData} New Currency Object
  * @static
- *
- * This function defines a new {Currency} object if it does not already exist
- * and enters it into the runtime currency registry, after which it can be
- * accessed using {Currency.getCurrency}.
- *
- * If the currency already exists, an Error will be thrown.
  */
 Currency.register = function registerCurrency(
   currencyCode: string,
   numericCode: number,
   precision: number
-) {
+): CurrencyData {
   const ucCode = currencyCode.toUpperCase();
   if (Object.prototype.hasOwnProperty.call(ccyRegistry, ucCode)) {
     throw new Error(`Currency '${currencyCode}' has already been defined`);
@@ -131,10 +111,10 @@ Currency.register = function registerCurrency(
 
 /**
  * Gets the set of all available currencies.
- * @return {Array} Array of {Currency} objects
+ * @return {Array} Array of registered {@link Currency} objects
  * @static
  */
-Currency.all = function allCurrencies() {
+Currency.all = function allCurrencies(): CurrencyData[] {
   const ccys: CurrencyData[] = [];
   Object.keys(ccyRegistry).forEach((ccyCode) => {
     ccys.push(ccyRegistry[ccyCode]);
@@ -143,12 +123,12 @@ Currency.all = function allCurrencies() {
 };
 
 /**
- * Check if an Object is a CurrencyData Instance
+ * Check if an Object is a {@link CurrencyData} Instance
  * @param {Object} object object to test
- * @return {Boolean} true if the obj is a CurrencyData instance
+ * @return {Boolean} true if the obj is a {@link CurrencyData} instance
  * @static
  */
-Currency.isCurrency = function isCurrency(object: unknown) {
+Currency.isCurrency = function isCurrency(object: unknown): boolean {
   return object instanceof CurrencyData;
 };
 
