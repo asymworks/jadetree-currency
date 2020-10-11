@@ -1,83 +1,6 @@
 import Currency from './currency';
+import { parseLocale } from './locale-utils';
 import { NumberPattern, parsePattern } from './numpattern';
-
-// String Shims
-const isalpha = (s: string) => !!s.match(/^[A-Za-z]+$/);
-const isdigit = (s: string) => !!s.match(/^\d+$/);
-
-/**
- * @typedef {LocaleTag}
- */
-interface LocaleTag {
-  language: string;
-  territory: string | undefined;
-  script: string | undefined;
-  variant: string | undefined;
-}
-
-/**
- * Parse a Locale Identifier into its parts
- * @param {String} identifier locale identifier
- * @param {String} separator separator character (defaults to "_")
- * @return {Object} object with language, territory, script, and variant keys
- */
-export function parseLocale(identifier: string, separator = '_'): LocaleTag {
-  let ident = identifier;
-  let script;
-  let territory;
-  let variant;
-
-  if (ident.includes('.')) {
-    // this is probably the charset/encoding, which we don't care about
-    [ident] = ident.split('.', 1);
-  }
-
-  if (ident.includes('@')) {
-    // this is a locale modifier such as @euro, which we don't care about either
-    [ident] = ident.split('@', 1);
-  }
-
-  const parts = ident.split(separator);
-  const language = parts.shift()?.toLowerCase();
-
-  if (!isalpha(language)) {
-    throw new Error(`Invalid locale language "${language}"`);
-  }
-
-  if (parts.length > 0) {
-    // Parse script to Title Case
-    if (parts[0].length === 4 && isalpha(parts[0])) {
-      script = parts.shift().toLowerCase();
-      script = script[0].toUpperCase() + script.slice(1);
-    }
-  }
-
-  if (parts.length > 0) {
-    // Parse territory
-    if (parts[0].length === 2 && isalpha(parts[0])) {
-      territory = parts.shift().toUpperCase();
-    } else if (parts[0].length === 3 && isdigit(parts[0])) {
-      territory = parts.shift();
-    }
-  }
-
-  if (parts.length > 0) {
-    // Parse variant
-    if (
-      (parts[0].length === 4 && isdigit(parts[0][0])) ||
-      (parts[0].length >= 5 && isalpha(parts[0][0]))
-    ) {
-      variant = parts.shift();
-    }
-  }
-
-  if (parts.length > 0) {
-    throw new Error(`Invalid locale identifier "${identifier}"`);
-  }
-
-  // eslint-disable-next-line no-alert, object-curly-newline
-  return { language, territory, script, variant };
-}
 
 /**
  * @typedef {LocaleData}
@@ -97,6 +20,8 @@ export function parseLocale(identifier: string, separator = '_'): LocaleTag {
  * @property {String} np Decimal Number Pattern
  * @property {String} cp Currency Number Pattern
  * @property {String} ap Accounting Number Pattern
+ * @property {String} pp Percentage Number Pattern
+ * @property {String} sp Scientific Number Pattern
  */
 export interface LocaleData {
   readonly d?: string;
@@ -115,10 +40,16 @@ export interface LocaleData {
   readonly np?: string;
   readonly cp?: string;
   readonly ap?: string;
+  readonly pp?: string;
+  readonly sp?: string;
+
+  // Index Access
+  readonly [index: string]: string | { [key: string]: string } | undefined;
 }
 
 // Shim for Object.hasOwnProperty
-const hasOwnProperty = (o, k) => Object.prototype.hasOwnProperty.call(o, k);
+const hasOwnProperty = (o: unknown, k: string): boolean =>
+  Object.prototype.hasOwnProperty.call(o, k);
 
 // Private Method Function for Locale.getField
 const getField = Symbol('getField');
@@ -149,6 +80,8 @@ const getDictField = Symbol('getDictField');
  * @property {NumberPattern} decimalPattern Decimal Number Pattern
  * @property {NumberPattern} currencyPattern Currency Number Pattern
  * @property {NumberPattern} accountingPattern Accounting Number Pattern
+ * @property {NumberPattern} percentagePattern Percentage Number Pattern
+ * @property {NumberPattern} scientificPattern Scientific Number Pattern
  */
 export class Locale {
   readonly tag: string;
@@ -159,17 +92,17 @@ export class Locale {
 
   private readonly data: LocaleData;
   private readonly parent: Locale | undefined;
-  private readonly np: NumberFormat | undefined;
-  private readonly cp: NumberFormat | undefined;
-  private readonly ap: NumberFormat | undefined;
 
-  constructor(
-    tag: string,
-    data: LocaleData,
-    parent: Locale | undefined = undefined
-  ) {
+  private readonly decimalPattern: NumberPattern | undefined;
+  private readonly currencyPattern: NumberPattern | undefined;
+  private readonly accountingPattern: NumberPattern | undefined;
+  private readonly percentagePattern: NumberPattern | undefined;
+  private readonly scientificPattern: NumberPattern | undefined;
+
+  constructor(tag: string, data: LocaleData, parent?: Locale | undefined) {
     const { language, territory, script, variant } = parseLocale(tag);
     this.tag = tag;
+    this.data = data;
     this.language = language;
     this.territory = territory;
     this.script = script;
@@ -190,34 +123,58 @@ export class Locale {
       this.parent = parent;
     }
 
-    // Load Data and Patterns
-    this.data = data;
-    if (this.data.np) {
-      this.np = parsePattern(this.data.np);
+    // Load Number Patterns
+    const np = this[getField]('np');
+    if (np) {
+      this.decimalPattern = parsePattern(np);
     }
-    if (this.data.cp) {
-      this.cp = parsePattern(this.data.cp);
+
+    const cp = this[getField]('cp');
+    if (cp) {
+      this.currencyPattern = parsePattern(cp);
     }
-    if (this.data.ap) {
-      this.ap = parsePattern(this.data.ap);
+
+    const ap = this[getField]('ap');
+    if (ap) {
+      this.accountingPattern = parsePattern(ap);
+    }
+
+    const pp = this[getField]('pp');
+    if (pp) {
+      this.percentagePattern = parsePattern(pp);
+    }
+
+    const sp = this[getField]('sp');
+    if (sp) {
+      this.scientificPattern = parsePattern(sp);
     }
 
     // Freeze Objects
     Object.freeze(this.data);
-    Object.freeze(this.np);
-    Object.freeze(this.cp);
-    Object.freeze(this.ap);
+    Object.freeze(this.decimalPattern);
+    Object.freeze(this.currencyPattern);
+    Object.freeze(this.accountingPattern);
+    Object.freeze(this.percentagePattern);
+    Object.freeze(this.scientificPattern);
     Object.freeze(this);
   }
 
   /** @private Get Field from Data or Parent Language */
   [getField](key: string): string | undefined {
-    if (hasOwnProperty(this.data, key)) {
-      return this.data[key];
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    let currentObject: Locale | undefined = this;
+    let returnValue: string | { [key: string]: string } | undefined;
+    while (currentObject && !hasOwnProperty(currentObject.data, key)) {
+      currentObject = currentObject.parent;
     }
 
-    if (this.parent !== null && hasOwnProperty(this.parent, key)) {
-      return this.parent[key];
+    // Help TypeScript with Narrowing
+    if (currentObject) {
+      returnValue = currentObject.data[key];
+    }
+
+    if (typeof returnValue === 'string') {
+      return returnValue;
     }
 
     // eslint-disable-next-line unicorn/no-useless-undefined
@@ -226,16 +183,28 @@ export class Locale {
 
   /** @private Get a Dictionary Item from Data or Parent Language */
   [getDictField](dataKey: string, dictKey: string): string | undefined {
-    if (hasOwnProperty(this.data, dataKey)) {
-      if (hasOwnProperty(this.data[dataKey], dictKey)) {
-        return this.data[dataKey][dictKey];
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    let currentObject: Locale | undefined = this;
+    let returnValue: string | { [key: string]: string } | undefined;
+    while (currentObject) {
+      const hasDataKey = hasOwnProperty(currentObject.data, dataKey);
+      const hasDictKey =
+        hasDataKey && hasOwnProperty(currentObject.data[dataKey], dictKey);
+
+      if (hasDataKey && hasDictKey) {
+        break;
       }
+
+      currentObject = currentObject.parent;
     }
 
-    if (this.parent !== null && hasOwnProperty(this.parent, dataKey)) {
-      if (hasOwnProperty(this.parent[dataKey], dictKey)) {
-        return this.parent[dataKey][dictKey];
-      }
+    // Help TypeScript with Narrowing
+    if (currentObject) {
+      returnValue = currentObject.data[dataKey];
+    }
+
+    if (typeof returnValue === 'object') {
+      return returnValue[dictKey];
     }
 
     // eslint-disable-next-line unicorn/no-useless-undefined
@@ -243,62 +212,53 @@ export class Locale {
   }
 
   /** Decimal Point Symbol */
-  get decimal(): string {
+  get decimal(): string | undefined {
     return this[getField]('d');
   }
 
   /** Digit Grouping Symbol */
-  get group(): string {
+  get group(): string | undefined {
     return this[getField]('g');
   }
 
   /** Plus Sign */
-  get plusSign(): string {
+  get plusSign(): string | undefined {
     return this[getField]('p');
   }
 
   /** Minus Sign */
-  get minusSign(): string {
+  get minusSign(): string | undefined {
     return this[getField]('m');
   }
 
   /** Percent Sign */
-  get percentSign(): string {
+  get percentSign(): string | undefined {
     return this[getField]('pc');
   }
 
   /** Permille Sign */
-  get permilleSign(): string {
+  get permilleSign(): string | undefined {
     return this[getField]('pm');
   }
 
   /** Exponential Sign */
-  get exponential(): string {
+  get exponential(): string | undefined {
     return this[getField]('e');
   }
 
   /** Superscripting Exponent */
-  get superscriptingExponent(): string {
+  get superscriptingExponent(): string | undefined {
     return this[getField]('x');
   }
 
   /** Infinity String */
-  get inf(): string {
+  get inf(): string | undefined {
     return this[getField]('inf');
   }
 
   /** Not-a-Number String */
-  get nan(): string {
+  get nan(): string | undefined {
     return this[getField]('nan');
-  }
-
-  /** Default Currency */
-  get currency(): Currency {
-    const ccy: string = this[getField]('c');
-    if (ccy === null) {
-      return Currency('XXX');
-    }
-    return Currency(ccy);
   }
 
   /**
@@ -318,22 +278,25 @@ export class Locale {
    * // Returns 'CHF'
    * (new Locale('en_US')).currencySymbol('CHF');
    */
-  currencySymbol(ccy: string | CurrencyData): string {
-    let ccyObject = ccy;
-
+  currencySymbol(ccy: string | number | Currency): string | undefined {
     // Ensure we have a normalized Currency Code
-    if (!(ccy instanceof Currency)) {
-      ccyObject = Currency(ccy);
+    const ccyCode = new Currency(ccy).currencyCode;
+    if (typeof ccyCode === 'undefined') {
+      return ccyCode;
     }
-    const ccyCode = ccyObject.currencyCode;
-    const ccySym = this[getDictField]('cs', ccyCode);
 
-    return ccySym || ccyCode;
+    const ccySym = this[getDictField]('cs', ccyCode);
+    if (typeof ccySym === 'string') {
+      return ccySym;
+    }
+
+    // Fallback is Upper-Case Currency Code
+    return ccyCode;
   }
 
   /**
    * Look up the localized Currency Name
-   * @param {String|CurrencyData} ccy Currency Object or ISO 4217 Currency Code
+   * @param {String|Currency} ccy Currency Object or ISO 4217 Currency Code
    * @param {Numeric} count Number of items (for pluralization)
    * @return {String} Currency Name
    *
@@ -346,18 +309,19 @@ export class Locale {
    * // Returns 'Kanadischer Dollar'
    * (new Locale('de_DE')).currencySymbol(Currency('CAD'));
    */
-  currencyName(ccy: string | CurrencyData): string {
-    // TODO: Add Pluralization
-
-    let ccyObject = ccy;
-
+  currencyName(ccy: string | number | Currency): string | undefined {
     // Ensure we have a normalized Currency Code
-    if (!(ccy instanceof Currency)) {
-      ccyObject = Currency(ccy);
+    const ccyCode = new Currency(ccy).currencyCode;
+    if (typeof ccyCode === 'undefined') {
+      return ccyCode;
     }
-    const ccyCode = ccyObject.currencyCode;
-    const ccyName = this[getDictField]('cn', ccyCode);
 
-    return ccyName || ccyCode;
+    const ccyName = this[getDictField]('cn', ccyCode);
+    if (typeof ccyName === 'string') {
+      return ccyName;
+    }
+
+    // Fallback is Upper-Case Currency Code
+    return ccyCode;
   }
 }

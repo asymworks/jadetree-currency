@@ -9,7 +9,7 @@ const currencyData = require('cldr-core/supplemental/currencyData.json');
 const likelySubtags = require('cldr-core/supplemental/likelySubtags.json');
 const parentLocales = require('cldr-core/supplemental/parentLocales.json');
 
-const { generateLocale, parseLocale } = require('./localeUtils');
+const { generateLocale, parseLocale } = require('../src/locale-utils');
 
 // Store CLDR Version
 const cldrVersion = parentLocales.supplemental.version._cldrVersion;
