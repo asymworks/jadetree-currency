@@ -11,6 +11,9 @@ const parentLocales = require('cldr-core/supplemental/parentLocales.json');
 
 const { generateLocale, parseLocale } = require('./localeUtils');
 
+// Store CLDR Version
+const cldrVersion = parentLocales.supplemental.version._cldrVersion;
+
 // Store Parent Locales
 const cldrParentLocales = parentLocales.supplemental.parentLocales.parentLocale;
 
@@ -169,6 +172,7 @@ module.exports = {
   cldrNumbersRoot,
   cldrNumbersLocales,
   cldrParentLocales,
+  cldrVersion,
   loadLocaleData,
   localCurrencies,
 };
