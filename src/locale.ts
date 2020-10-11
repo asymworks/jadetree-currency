@@ -261,6 +261,15 @@ export class Locale {
     return this[getField]('nan');
   }
 
+  /** Default Currency */
+  get currency(): Currency {
+    const ccy = this[getField]('c');
+    if (typeof ccy === 'undefined') {
+      return new Currency('XXX');
+    }
+    return new Currency(ccy);
+  }
+
   /**
    * Look up the localized Currency Symbol
    * @param {String|Currency} ccy Currency Object or ISO 4217 Currency Code
