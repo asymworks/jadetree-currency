@@ -109,13 +109,15 @@ export class Locale {
     this.variant = variant;
 
     // Language-only Locales may not have a parent
-    if (!territory && !script && !variant && !!parent) {
-      throw new Error(`Language-only Locale ${tag} may not have a parent`);
+    if (!territory && !script && !variant) {
+      if (parent && parent.tag !== 'root') {
+        throw new Error(`Language-only Locale ${tag} may not have a parent`);
+      }
     }
 
     // Parent must share language
     if (parent) {
-      if (parent.language !== this.language) {
+      if (parent.tag !== 'root' && parent.language !== this.language) {
         throw new Error(
           `Locale ${tag} must have a parent with language ${language}`
         );
