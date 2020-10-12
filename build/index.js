@@ -80,7 +80,7 @@ async function build(options) {
         replace: () => 'index.js',
       },
     }));
-    /*
+
     // Build Locale Data Files (UMD Bundle)
     for (l of langs) {
       await build(configFactoryUMD({
@@ -96,7 +96,6 @@ async function build(options) {
         },
       }));
     }
-    */
   }
   catch (e) {
     console.log(e);  // eslint-disable-line no-console

@@ -384,9 +384,7 @@ export function format(
 
   // Apply Currency Symbol
   if (returnValue.includes('¤')) {
-    const ccy: Currency = currency || new Currency('XXX');
     const ccyCode: string = currency?.currencyCode || 'XXX';
-
     returnValue = returnValue.replace(
       '¤¤¤',
       locale.currencyName(ccyCode) || ccyCode
