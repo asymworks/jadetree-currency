@@ -3,7 +3,7 @@
 import { Locale } from '../locale';
 import root from './root';
 
-// Unicode CLDR Version 37, retrieved 2020-10-11
+// Unicode CLDR Version 37, retrieved 2020-10-12
 export const da = new Locale(
   'da',
   {
@@ -177,6 +177,9 @@ export const da = new Locale(
 
 // Locale Data
 export const da_GL = new Locale('da_GL', { c: 'DKK', cs: {}, cn: {} }, da);
+
+// Aliased Locales
+export const da_DK = da;
 
 // Default Export
 export default da;

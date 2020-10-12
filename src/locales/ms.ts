@@ -3,7 +3,7 @@
 import { Locale } from '../locale';
 import root from './root';
 
-// Unicode CLDR Version 37, retrieved 2020-10-11
+// Unicode CLDR Version 37, retrieved 2020-10-12
 export const ms = new Locale(
   'ms',
   {
@@ -181,6 +181,9 @@ export const ms_SG = new Locale(
   { c: 'SGD', cs: { SGD: '$' }, cn: {} },
   ms
 );
+
+// Aliased Locales
+export const ms_MY = ms;
 
 // Default Export
 export default ms;

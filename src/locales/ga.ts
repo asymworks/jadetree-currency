@@ -3,7 +3,7 @@
 import { Locale } from '../locale';
 import root from './root';
 
-// Unicode CLDR Version 37, retrieved 2020-10-11
+// Unicode CLDR Version 37, retrieved 2020-10-12
 export const ga = new Locale(
   'ga',
   {
@@ -174,6 +174,9 @@ export const ga = new Locale(
 
 // Locale Data
 export const ga_GB = new Locale('ga_GB', { c: 'GBP', cs: {}, cn: {} }, ga);
+
+// Aliased Locales
+export const ga_IE = ga;
 
 // Default Export
 export default ga;

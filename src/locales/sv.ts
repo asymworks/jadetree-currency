@@ -3,7 +3,7 @@
 import { Locale } from '../locale';
 import root from './root';
 
-// Unicode CLDR Version 37, retrieved 2020-10-11
+// Unicode CLDR Version 37, retrieved 2020-10-12
 export const sv = new Locale(
   'sv',
   {
@@ -193,6 +193,9 @@ export const sv = new Locale(
 // Locale Data
 export const sv_AX = new Locale('sv_AX', { c: 'EUR', cs: {}, cn: {} }, sv);
 export const sv_FI = new Locale('sv_FI', { c: 'EUR', cs: {}, cn: {} }, sv);
+
+// Aliased Locales
+export const sv_SE = sv;
 
 // Default Export
 export default sv;

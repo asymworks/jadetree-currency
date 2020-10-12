@@ -3,7 +3,7 @@
 import { Locale } from '../locale';
 import root from './root';
 
-// Unicode CLDR Version 37, retrieved 2020-10-11
+// Unicode CLDR Version 37, retrieved 2020-10-12
 export const sw = new Locale(
   'sw',
   {
@@ -286,6 +286,9 @@ export const sw_UG = new Locale(
   { c: 'UGX', cs: { UGX: 'USh' }, cn: {} },
   sw
 );
+
+// Aliased Locales
+export const sw_TZ = sw;
 
 // Default Export
 export default sw;

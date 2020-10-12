@@ -3,7 +3,7 @@
 import { Locale } from '../locale';
 import root from './root';
 
-// Unicode CLDR Version 37, retrieved 2020-10-11
+// Unicode CLDR Version 37, retrieved 2020-10-12
 export const az = new Locale(
   'az',
   {
@@ -175,6 +175,9 @@ export const az = new Locale(
 
 // Locale Data
 export const az_Latn = new Locale('az_Latn', { cs: {}, cn: {} }, az);
+
+// Aliased Locales
+export const az_AZ = az;
 
 // Default Export
 export default az;

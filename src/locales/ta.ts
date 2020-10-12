@@ -3,7 +3,7 @@
 import { Locale } from '../locale';
 import root from './root';
 
-// Unicode CLDR Version 37, retrieved 2020-10-11
+// Unicode CLDR Version 37, retrieved 2020-10-12
 export const ta = new Locale(
   'ta',
   {
@@ -188,6 +188,9 @@ export const ta_SG = new Locale(
   { c: 'SGD', cs: { MYR: 'RM', SGD: '$' }, cn: {} },
   ta
 );
+
+// Aliased Locales
+export const ta_IN = ta;
 
 // Default Export
 export default ta;

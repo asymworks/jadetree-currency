@@ -3,7 +3,7 @@
 import { Locale } from '../locale';
 import root from './root';
 
-// Unicode CLDR Version 37, retrieved 2020-10-11
+// Unicode CLDR Version 37, retrieved 2020-10-12
 export const pa = new Locale(
   'pa',
   {
@@ -173,6 +173,9 @@ export const pa = new Locale(
 
 // Locale Data
 export const pa_Guru = new Locale('pa_Guru', { cs: {}, cn: {} }, pa);
+
+// Aliased Locales
+export const pa_IN = pa;
 
 // Default Export
 export default pa;

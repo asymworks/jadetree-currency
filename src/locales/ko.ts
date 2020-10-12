@@ -3,7 +3,7 @@
 import { Locale } from '../locale';
 import root from './root';
 
-// Unicode CLDR Version 37, retrieved 2020-10-11
+// Unicode CLDR Version 37, retrieved 2020-10-12
 export const ko = new Locale(
   'ko',
   {
@@ -174,6 +174,9 @@ export const ko = new Locale(
 
 // Locale Data
 export const ko_KP = new Locale('ko_KP', { c: 'KPW', cs: {}, cn: {} }, ko);
+
+// Aliased Locales
+export const ko_KR = ko;
 
 // Default Export
 export default ko;

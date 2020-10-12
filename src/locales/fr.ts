@@ -3,7 +3,7 @@
 import { Locale } from '../locale';
 import root from './root';
 
-// Unicode CLDR Version 37, retrieved 2020-10-11
+// Unicode CLDR Version 37, retrieved 2020-10-12
 export const fr = new Locale(
   'fr',
   {
@@ -349,6 +349,9 @@ export const fr_VU = new Locale(
 );
 export const fr_WF = new Locale('fr_WF', { c: 'XPF', cs: {}, cn: {} }, fr);
 export const fr_YT = new Locale('fr_YT', { c: 'EUR', cs: {}, cn: {} }, fr);
+
+// Aliased Locales
+export const fr_FR = fr;
 
 // Default Export
 export default fr;

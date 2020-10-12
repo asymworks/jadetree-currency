@@ -3,7 +3,7 @@
 import { Locale } from '../locale';
 import root from './root';
 
-// Unicode CLDR Version 37, retrieved 2020-10-11
+// Unicode CLDR Version 37, retrieved 2020-10-12
 export const sk = new Locale(
   'sk',
   {
@@ -177,6 +177,9 @@ export const sk = new Locale(
 );
 
 // Locale Data
+
+// Aliased Locales
+export const sk_SK = sk;
 
 // Default Export
 export default sk;

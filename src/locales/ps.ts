@@ -3,7 +3,7 @@
 import { Locale } from '../locale';
 import root from './root';
 
-// Unicode CLDR Version 37, retrieved 2020-10-11
+// Unicode CLDR Version 37, retrieved 2020-10-12
 export const ps = new Locale(
   'ps',
   {
@@ -177,6 +177,9 @@ export const ps_PK = new Locale(
   { c: 'PKR', cs: { PKR: 'Rs' }, cn: { XXX: 'نامعلومه مروجه پېسے' } },
   ps
 );
+
+// Aliased Locales
+export const ps_AF = ps;
 
 // Default Export
 export default ps;

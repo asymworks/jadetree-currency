@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "declarationDir": "lib",
-    "target": "es5",
+    "outDir": "lib",
+    "target": "es6",
     "module": "es2015",
     "sourceMap": true,
     "declaration": true,
@@ -10,7 +10,8 @@
     "moduleResolution": "node"
   },
   "include": [
-    "./src/**/*.ts"
+    "./src/**/*.ts",
+    "./src/**/*.js"
   ],
   "exclude": [
     "./node_modules/",

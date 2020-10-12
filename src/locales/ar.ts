@@ -3,7 +3,7 @@
 import { Locale } from '../locale';
 import root from './root';
 
-// Unicode CLDR Version 37, retrieved 2020-10-11
+// Unicode CLDR Version 37, retrieved 2020-10-12
 export const ar = new Locale(
   'ar',
   {
@@ -277,4 +277,4 @@ export const ar_TN = new Locale(
 export const ar_YE = new Locale('ar_YE', { c: 'YER', cs: {}, cn: {} }, ar);
 
 // Default Export
-export default ar_EG;
+export default ar;

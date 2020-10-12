@@ -3,7 +3,7 @@
 import { Locale } from '../locale';
 import root from './root';
 
-// Unicode CLDR Version 37, retrieved 2020-10-11
+// Unicode CLDR Version 37, retrieved 2020-10-12
 export const af = new Locale(
   'af',
   {
@@ -178,6 +178,9 @@ export const af_NA = new Locale(
   { c: 'NAD', cs: { NAD: '$' }, cn: {} },
   af
 );
+
+// Aliased Locales
+export const af_ZA = af;
 
 // Default Export
 export default af;

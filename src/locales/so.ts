@@ -3,7 +3,7 @@
 import { Locale } from '../locale';
 import root from './root';
 
-// Unicode CLDR Version 37, retrieved 2020-10-11
+// Unicode CLDR Version 37, retrieved 2020-10-12
 export const so = new Locale(
   'so',
   {
@@ -186,6 +186,9 @@ export const so_KE = new Locale(
   { c: 'KES', cs: { KES: 'Ksh' }, cn: {} },
   so
 );
+
+// Aliased Locales
+export const so_SO = so;
 
 // Default Export
 export default so;

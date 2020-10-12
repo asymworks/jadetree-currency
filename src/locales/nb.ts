@@ -3,7 +3,7 @@
 import { Locale } from '../locale';
 import root from './root';
 
-// Unicode CLDR Version 37, retrieved 2020-10-11
+// Unicode CLDR Version 37, retrieved 2020-10-12
 export const nb = new Locale(
   'nb',
   {
@@ -176,6 +176,9 @@ export const nb = new Locale(
 
 // Locale Data
 export const nb_SJ = new Locale('nb_SJ', { c: 'NOK', cs: {}, cn: {} }, nb);
+
+// Aliased Locales
+export const nb_NO = nb;
 
 // Default Export
 export default nb;

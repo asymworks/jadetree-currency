@@ -3,7 +3,7 @@
 import { Locale } from '../locale';
 import root from './root';
 
-// Unicode CLDR Version 37, retrieved 2020-10-11
+// Unicode CLDR Version 37, retrieved 2020-10-12
 export const fa = new Locale(
   'fa',
   {
@@ -210,6 +210,9 @@ export const fa_AF = new Locale(
   },
   fa
 );
+
+// Aliased Locales
+export const fa_IR = fa;
 
 // Default Export
 export default fa;

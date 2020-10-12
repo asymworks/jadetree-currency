@@ -3,7 +3,7 @@
 import { Locale } from '../locale';
 import root from './root';
 
-// Unicode CLDR Version 37, retrieved 2020-10-11
+// Unicode CLDR Version 37, retrieved 2020-10-12
 export const zh = new Locale(
   'zh',
   {
@@ -496,6 +496,9 @@ export const zh_Hant = new Locale(
   },
   root
 );
+
+// Aliased Locales
+export const zh_CN = zh;
 
 // Default Export
 export default zh;

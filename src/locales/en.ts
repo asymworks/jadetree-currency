@@ -3,7 +3,7 @@
 import { Locale } from '../locale';
 import root from './root';
 
-// Unicode CLDR Version 37, retrieved 2020-10-11
+// Unicode CLDR Version 37, retrieved 2020-10-12
 export const en = new Locale(
   'en',
   {
@@ -700,6 +700,9 @@ export const en_ZM = new Locale(
   en_001
 );
 export const en_ZW = new Locale('en_ZW', { c: 'USD', cs: {}, cn: {} }, en_001);
+
+// Aliased Locales
+export const en_US = en;
 
 // Default Export
 export default en;

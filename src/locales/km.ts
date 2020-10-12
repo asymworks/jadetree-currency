@@ -3,7 +3,7 @@
 import { Locale } from '../locale';
 import root from './root';
 
-// Unicode CLDR Version 37, retrieved 2020-10-11
+// Unicode CLDR Version 37, retrieved 2020-10-12
 export const km = new Locale(
   'km',
   {
@@ -172,6 +172,9 @@ export const km = new Locale(
 );
 
 // Locale Data
+
+// Aliased Locales
+export const km_KH = km;
 
 // Default Export
 export default km;

@@ -3,7 +3,7 @@
 import { Locale } from '../locale';
 import root from './root';
 
-// Unicode CLDR Version 37, retrieved 2020-10-11
+// Unicode CLDR Version 37, retrieved 2020-10-12
 export const nl = new Locale(
   'nl',
   {
@@ -201,6 +201,9 @@ export const nl_SX = new Locale(
   { c: 'ANG', cs: { ANG: 'NAf.' }, cn: {} },
   nl
 );
+
+// Aliased Locales
+export const nl_NL = nl;
 
 // Default Export
 export default nl;

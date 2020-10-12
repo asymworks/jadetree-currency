@@ -3,7 +3,7 @@
 import { Locale } from '../locale';
 import root from './root';
 
-// Unicode CLDR Version 37, retrieved 2020-10-11
+// Unicode CLDR Version 37, retrieved 2020-10-12
 export const ru = new Locale(
   'ru',
   {
@@ -206,6 +206,9 @@ export const ru_MD = new Locale(
   ru
 );
 export const ru_UA = new Locale('ru_UA', { c: 'UAH', cs: {}, cn: {} }, ru);
+
+// Aliased Locales
+export const ru_RU = ru;
 
 // Default Export
 export default ru;

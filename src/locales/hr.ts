@@ -3,7 +3,7 @@
 import { Locale } from '../locale';
 import root from './root';
 
-// Unicode CLDR Version 37, retrieved 2020-10-11
+// Unicode CLDR Version 37, retrieved 2020-10-12
 export const hr = new Locale(
   'hr',
   {
@@ -181,6 +181,9 @@ export const hr_BA = new Locale(
   { c: 'BAM', cs: { BAM: 'KM' }, cn: {} },
   hr
 );
+
+// Aliased Locales
+export const hr_HR = hr;
 
 // Default Export
 export default hr;

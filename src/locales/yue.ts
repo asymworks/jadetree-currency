@@ -3,7 +3,7 @@
 import { Locale } from '../locale';
 import root from './root';
 
-// Unicode CLDR Version 37, retrieved 2020-10-11
+// Unicode CLDR Version 37, retrieved 2020-10-12
 export const yue = new Locale(
   'yue',
   {
@@ -175,6 +175,9 @@ export const yue = new Locale(
 
 // Locale Data
 export const yue_Hant = new Locale('yue_Hant', { cs: {}, cn: {} }, yue);
+
+// Aliased Locales
+export const yue_HK = yue;
 
 // Default Export
 export default yue;
