@@ -1,4 +1,5 @@
 import Decimal from 'decimal.js-light';
+
 import Currency from './currency';
 import { Locale } from './locale';
 import rootLocale from './locales/root';
@@ -239,7 +240,7 @@ function quantizeValue(
  *                           quantized to produce a formatted output strictly
  *                           matching the CLDR definition for the locale
  */
-interface FormatOptions {
+export interface FormatOptions {
   locale?: Locale | undefined;
   currency?: Currency | string | undefined;
   currencyDigits?: boolean | undefined;
@@ -255,7 +256,7 @@ interface FormatOptions {
  * @param {FormatOptions} options Formatting Options
  * @return {String} formatted decimal string
  */
-export default function format(
+export function format(
   value: Decimal | number | string,
   pattern: NumberPattern | string,
   options?: FormatOptions | undefined
