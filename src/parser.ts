@@ -93,10 +93,10 @@ export function parse(
   // Try to parse as a POSIX number
   try {
     parsed = new Decimal(s.split(g).join('').split(d).join('.'));
-  } catch (error) {
+  } catch {
     throw new Error(`${value} is not a properly formatted decimal number.`);
   }
-  
+
   // Check that the number can be re-formatted to original
   if (strict && s.includes(g)) {
     const proper = format(parsed, locale.decimalPattern, { locale });

@@ -10,11 +10,7 @@
  *                           included in the array
  * @return {Array}
  */
-export function rsplit(
-  string: string,
-  separator: string,
-  maxsplit: number
-): string[] {
+function rsplit(string: string, separator: string, maxsplit: number): string[] {
   const split = string.split(separator);
   return maxsplit
     ? [split.slice(0, -maxsplit).join(separator)].concat(split.slice(-maxsplit))

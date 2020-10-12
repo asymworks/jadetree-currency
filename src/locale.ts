@@ -1,7 +1,4 @@
-import Decimal from 'decimal.js-light';
-
 import Currency from './currency';
-import { format, FormatOptions } from './formatter';
 import { parseLocale } from './locale-utils';
 import { NumberPattern, parsePattern } from './numpattern';
 

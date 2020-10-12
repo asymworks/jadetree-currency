@@ -3590,7 +3590,7 @@ loose-envify@^1.0.0:
   dependencies:
     js-tokens "^3.0.0 || ^4.0.0"
 
-magic-string@^0.25.7:
+magic-string@^0.25.4, magic-string@^0.25.7:
   version "0.25.7"
   resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.25.7.tgz#3f497d6fd34c669c6798dcb821f2ef31f5445051"
   integrity sha512-4CrMT5DOHTDk4HYDlzmwu4FVCcIYI8gauveasrdCu2IKIFOJ3f0v/8MDGJCDL9oD2ppz/Av1b0Nj345H9M+XIA==
@@ -4720,10 +4720,12 @@ rimraf@2.6.3:
   dependencies:
     glob "^7.1.3"
 
-rollup-plugin-peer-deps-external@^2.2.3:
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-peer-deps-external/-/rollup-plugin-peer-deps-external-2.2.3.tgz#059a8aec1eefb48a475e9fcedc3b9e3deb521213"
-  integrity sha512-W6IePXTExGXVDAlfZbNUUrx3GxUOZP248u5n4a4ID1XZMrbQ+uGeNiEfapvdzwx0qZi5DNH/hDLiPUP+pzFIxg==
+rollup-plugin-rewrite@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-rewrite/-/rollup-plugin-rewrite-0.0.4.tgz#51433a9960fa44e3ca69e067fe70f863c7d3909b"
+  integrity sha512-BvbfpI3Ptsegkr1oHycIMkfUl3Ga+o/BvPgSBr7BTLNaIV3jgCjyppr0yIOezjZ8HzsQqu38bda34oybOAV5Yg==
+  dependencies:
+    magic-string "^0.25.4"
 
 rollup-plugin-terser@^7.0.2:
   version "7.0.2"

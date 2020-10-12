@@ -7,11 +7,15 @@ yarn.lock
 package-lock.json
 
 # dev
+build
+scripts
+src
 tests
 .editorconfig
 .eslintrc.js
+.gitignore.js
 .prettierrc.js
-.nyc_output
+tsconfig.json
 
 #doc
 CONTRIBUTING.md
