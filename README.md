@@ -8,17 +8,16 @@ localization using Unicode CLDR data.
 Using jt-currency is easy:
 
 ```javascript
-import {
-  Money, Currency, Locale
-} from '@jadetree/currency';
+import { Money, Currency, Locale } from '@jadetree/currency';
 
-// Load l10n information dynamically (only en_US and en_US_POSIX are loaded
-// by default). In the browser, include with a <script> tag instead.
-import { DE, EN } from '@jadetree/currency/locales';
+// Load l10n data from the locales sub-package
+import { de_DE } from '@jadetree/currency/locales/de';
+import { en_US } from '@jadetree/currency/locales/en';
 
 /* CommonJS (Node.js) Syntax */
 const { Money, Currency, Locale } = require('@jadetree/currency');
-const { DE, EN } = require('@jadetree/currency/locales');
+const { de_DE } = require('@jadetree/currency/locales/de');
+const { en_US } = require('@jadetree/currency/locales/en');
 
 // Create a Money Object with USD $4.00
 const m = new Money('4.00', 'USD');
@@ -27,8 +26,8 @@ const m = new Money('4.00', 'USD');
 const m2 = m.add(1).subtract('0.50');
 
 // Format into a localized string
-m2.format(new Locale('en_US'));     // $4.50
-m2.format(new Locale('de_DE'));     // 4,50 $
+m2.format(en_US);     // '$4.50'
+m2.format(de_DE);     // '4,50\u00a0$'
 
 // Localized parsing works too, with default currency for the locale
 const m3 = new Money('1 234,56', new Locale('fr_FR'));

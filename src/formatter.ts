@@ -291,7 +291,7 @@ export function format(
 
   if (options && options.currency) {
     currency = new Currency(options.currency);
-    if (options.currencyDigits) {
+    if (typeof options.currencyDigits !== 'undefined') {
       currencyDigits = !!options.currencyDigits;
     }
   }

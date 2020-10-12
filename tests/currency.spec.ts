@@ -54,7 +54,7 @@ describe('Currency', function() {
       var testObj = new Currency('XXX');
       expect(testObj).to.have.property('currencyCode', 'XXX');
       expect(testObj).to.have.property('numericCode', 999);
-      expect(testObj).to.have.property('precision', 0);
+      expect(testObj).to.have.property('precision', 6);
     });
 
     it('should throw an exception when an unknown Currency is accessed', function() {
