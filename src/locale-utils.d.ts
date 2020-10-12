@@ -8,8 +8,5 @@ interface LocaleTag {
   variant?: string | undefined;
 }
 
-declare function isalpha(s: string): string;
-declare function isdigit(s: string): string;
-
 export function generateLocale(parts: LocaleTag, separator?: string): string;
 export function parseLocale(identifier: string, separator?: string): LocaleTag;
