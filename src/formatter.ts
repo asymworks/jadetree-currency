@@ -290,7 +290,11 @@ export function format(
   }
 
   if (options && options.currency) {
-    currency = new Currency(options.currency);
+    if (options.currency instanceof Currency) {
+      currency = options.currency;
+    } else {
+      currency = new Currency(options.currency);
+    }
     if (options.currencyDigits) {
       currencyDigits = !!options.currencyDigits;
     }
@@ -385,12 +389,12 @@ export function format(
 
     returnValue = returnValue.replace(
       '¤¤¤',
-      locale.currencyName(ccy) || ccyCode
+      locale.currencyName(ccyCode) || ccyCode
     );
     returnValue = returnValue.replace('¤¤', ccyCode);
     returnValue = returnValue.replace(
       '¤',
-      locale.currencySymbol(ccy) || ccyCode
+      locale.currencySymbol(ccyCode) || ccyCode
     );
   }
 

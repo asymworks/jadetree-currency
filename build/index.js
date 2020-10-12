@@ -4,8 +4,7 @@ const path = require('path');
 
 const rollup = require('rollup');
 const configFactoryESM = require('./rollup.esm');
-const configFactoryNode = require('./rollup.node');
-const configFactoryWeb = require('./rollup.web');
+const configFactoryUMD = require('./rollup.umd');
 
 const packageJson = require('../package.json');
 
@@ -13,13 +12,12 @@ const packageJson = require('../package.json');
 const localeModule = path.resolve(__dirname, '../src/locale.ts');
 
 // Locale Root Directories
-const nodeLocaleRoot = path.join(path.dirname(packageJson.main), 'locales');
-const webLocaleRoot = path.join(path.dirname(packageJson.browser), 'locales');
+const localeRoot = path.join(path.dirname(packageJson.main), 'locales');
 
 // List of Languages
 const langs = fs.readdirSync(path.join(__dirname, '../src/locales'))
   .map((f) => f.split('.')[0])
-  .filter((l) => l !== 'root' && l !== 'index');
+  .filter((l) => l !== 'index');
 
 // Build Function
 async function build(options) {
@@ -61,66 +59,44 @@ async function build(options) {
       declarations: false,
     }));
 
-    // Build Library (CommonJs)
-    await build(configFactoryNode({
+    // Build Library (UMD Bundle)
+    await build(configFactoryUMD({
       input: './src/index.ts',
       outputFile: packageJson.main,
-      external: [...Object.keys(packageJson.dependencies)],
-    }));
-
-    // Build Library (Bundle)
-    await build(configFactoryWeb({
-      input: './src/index.ts',
-      outputFile: packageJson.browser,
       name: 'jadetree_currency',
       globals: {},
     }));
 
-    // Build Locale Index File (CommonJs)
-    await build(configFactoryNode({
+    // Build Locale Index File (UMD Bundle)
+    await build(configFactoryUMD({
       input: './src/locales/index.ts',
-      outputFile: path.join(nodeLocaleRoot, 'index.js'),
-      external: [
-        './root',
-        ...langs.map((l) => `./${l}`)
-      ],
-    }));
-
-    // Build Locale Root File (CommonJs)
-    await build(configFactoryNode({
-      input: './src/locales/root.ts',
-      outputFile: path.join(nodeLocaleRoot, 'root.js'),
-      external: [ '../locale' ],
+      outputFile: path.join(localeRoot, 'index.js'),
+      name: 'jadetree_currency_l10n',
+      globals: {
+        [localeModule]: 'jadetree_currency',
+      },
       rewriteOpts: {
-        find: /\.\.\/locale/mg,
-        replace: () => '../index',
+        find: /locale\.ts/mg,
+        replace: () => 'index.js',
       },
     }));
-
-    // Build Locale Files (CommonJs)
+    /*
+    // Build Locale Data Files (UMD Bundle)
     for (l of langs) {
-      await build(configFactoryNode({
+      await build(configFactoryUMD({
         input: `./src/locales/${l}.ts`,
-        outputFile: path.join(nodeLocaleRoot, `${l}.js`),
-        external: [ '../locale', './root' ],
-        rewriteOpts: {
-          find: /\.\.\/locale/mg,
-          replace: () => '../index',
-        },
-      }));
-    }
-
-    // Build Locale Files (Bundle)
-    for (l of langs) {
-      await build(configFactoryWeb({
-        input: `./src/locales/${l}.ts`,
-        outputFile: path.join(webLocaleRoot, `${l}.min.js`),
+        outputFile: path.join(localeRoot, `${l}.js`),
         name: `jadetree_currency_l10n_${l}`,
         globals: {
           [localeModule]: 'jadetree_currency',
         },
+        rewriteOpts: {
+          find: /locale\.ts/mg,
+          replace: () => 'index.js',
+        },
       }));
     }
+    */
   }
   catch (e) {
     console.log(e);  // eslint-disable-line no-console

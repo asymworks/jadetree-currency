@@ -291,7 +291,13 @@ export class Locale {
    */
   currencySymbol(ccy: string | number | Currency): string | undefined {
     // Ensure we have a normalized Currency Code
-    const ccyCode = new Currency(ccy).currencyCode;
+    let ccyCode: string | undefined;
+    if (ccy instanceof Currency) {
+      ccyCode = ccy.currencyCode;
+    } else {
+      ccyCode = new Currency(ccy).currencyCode;
+    }
+
     if (typeof ccyCode === 'undefined') {
       return ccyCode;
     }
@@ -322,7 +328,13 @@ export class Locale {
    */
   currencyName(ccy: string | number | Currency): string | undefined {
     // Ensure we have a normalized Currency Code
-    const ccyCode = new Currency(ccy).currencyCode;
+    let ccyCode: string | undefined;
+    if (ccy instanceof Currency) {
+      ccyCode = ccy.currencyCode;
+    } else {
+      ccyCode = new Currency(ccy).currencyCode;
+    }
+
     if (typeof ccyCode === 'undefined') {
       return ccyCode;
     }

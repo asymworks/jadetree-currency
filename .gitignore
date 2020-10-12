@@ -1,6 +1,7 @@
 # Library Output
-index.js
-dist/
+index*.js
+index*.js.map
+lib/
 locales/
 
 # Logs

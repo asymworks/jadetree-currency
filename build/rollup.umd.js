@@ -1,10 +1,11 @@
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const commonjs = require('@rollup/plugin-commonjs');
+const rewrite = require('rollup-plugin-rewrite');
 const { terser } = require('rollup-plugin-terser');
 const typescript = require('rollup-plugin-typescript2');
 
 module.exports = (config) => {
-  const { input, outputFile, name, globals } = config;
+  const { input, outputFile, name, globals, rewriteOpts } = config;
   return {
     input: {
       input,
@@ -24,18 +25,22 @@ module.exports = (config) => {
     },
     output: [
       {
-        format: 'iife',
-        file: outputFile.replace(/\.min\./, '.bundle.'),
-        name: 'jadetree_currency',
+        format: 'umd',
+        file: outputFile.replace(/\.min\.js$/, '.js'),
+        name: name,
+        plugins: rewriteOpts ? [rewrite(rewriteOpts)] : [],
         sourcemap: false,
         exports: 'named',
         globals,
       },
       {
-        format: 'iife',
-        file: outputFile,
+        format: 'umd',
+        file: outputFile.replace(/(?<!(min))\.js$/, '.min.js'),
         name: name,
-        plugins: [ terser() ],
+        plugins: [
+          terser(),
+          ...(rewriteOpts ? [rewrite(rewriteOpts)] : []),
+        ],
         sourcemap: true,
         exports: 'named',
         globals,
