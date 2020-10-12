@@ -7,7 +7,7 @@
   "module": "dist/esm/index.js",
   "repository": "https://github.com/asymworks/jadetree-currency",
   "author": "Jonathan Krauss <jkrauss@asymworks.com>",
-  "license": "BSD-2-Clause",
+  "license": "BSD-3-Clause",
   "private": false,
   "scripts": {
     "build": "rm -rf dist && node --experimental-json-modules build",
