@@ -2,8 +2,23 @@ import { expect, should } from 'chai';
 import { Locale, LocaleData } from '../src/locale';
 import { en_US_POSIX } from '../src/locales/en';
 
-describe('Locale Data', function() {
-  describe('Inheritance', function() {
+describe('Locale Class', function() {
+  describe('Behavior and Data', function() {
+    it('should have a public constructor', function() {
+      var testFn = function() { return new Locale('zz', { }); }
+      expect(testFn).to.not.throw();
+    });
+
+    it('should return frozen objects', function() {
+      var testObj = en_US_POSIX;
+      expect(testObj).to.be.frozen;
+      expect(testObj.decimalPattern).to.be.frozen;
+      expect(testObj.currencyPattern).to.be.frozen;
+      expect(testObj.accountingPattern).to.be.frozen;
+      expect(testObj.percentagePattern).to.be.frozen;
+      expect(testObj.scientificPattern).to.be.frozen;
+    });
+
     it('should accept a minimal locale definition', function() {
       const data: LocaleData = {
         d: '.',
@@ -19,6 +34,34 @@ describe('Locale Data', function() {
       expect(locale.decimal).to.equal('.');
       expect(locale.group).to.equal(',');
     });
+
+    it('should provide the en_US_POSIX locale', function() {
+      should().not.equal(en_US_POSIX, undefined);
+    });
+
+    it('should expose the parsed locale tag fields', function() {
+      expect(en_US_POSIX).to.have.property('language', 'en');
+      expect(en_US_POSIX).to.have.property('territory', 'US');
+      should().equal(en_US_POSIX.script, undefined);
+      expect(en_US_POSIX).to.have.property('variant', 'POSIX');
+    });
+
+    it('should contain number formatting symbols', function() {
+      expect(en_US_POSIX).to.have.property('decimal', '.');
+      expect(en_US_POSIX).to.have.property('group', ',');
+      expect(en_US_POSIX).to.have.property('plusSign', '+');
+      expect(en_US_POSIX).to.have.property('minusSign', '-');
+      expect(en_US_POSIX).to.have.property('exponential', 'E');
+      expect(en_US_POSIX).to.have.property('superscriptingExponent', '×');
+      expect(en_US_POSIX).to.have.property('percentSign', '%');
+      expect(en_US_POSIX).to.have.property('permilleSign', '0/00');
+    });
+
+    it('should contain strings to represent infinity and non-number values', function() {
+      expect(en_US_POSIX).to.have.property('inf', 'INF');
+      expect(en_US_POSIX).to.have.property('nan', 'NaN');
+    });
+
     it('should resolve symbol properties recursively', function() {
       const l1 = new Locale('zz_001', { d: 'd1', g: 'g1', p: 'p1' });
       const l2 = new Locale('zz_010', { d: 'd2', g: 'g2' }, l1);
@@ -36,6 +79,7 @@ describe('Locale Data', function() {
       expect(l3.group).to.equal('g2');
       expect(l3.plusSign).to.equal('p1');
     });
+
     it('should resolve map properties recursively', function() {
       const l1 = new Locale(
         'zz_001',

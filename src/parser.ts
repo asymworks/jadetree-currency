@@ -26,16 +26,20 @@ export interface ParseOptions {
  * symbols). When the given string cannot be parsed, an error is thrown.
  *
  * @example
+ * import { de } from '@jadetree/currency/locales/de';
+ * import { en } from '@jadetree/currency/locales/en';
+ * import { ru } from '@jadetree/currency/locales/ru';
  * // Returns Decimal(1099.98)
- * (new Locale('en_US')).parseNumber('1,099.98');
+ * parse('1,099.98', { locale: en });
  * // Returns Decimal(1099.98)
- * (new Locale('de_DE')).parseNumber('1.099,98');
+ * parse('1.099,98', { locale: de });
  * // Returns Decimal(12345.12)
- * (new Locale('ru')).parseNumber('12 345,12');
+ * parse('12 345,12', { locale: ru });
  *
  * When the given string cannot be parsed, an exception is raised:
  * @example
  * // Error('2,109,998 is not a properly formatted decimal number')
+ * parse('2,109,998', { locale: de });
  *
  */
 export function parse(
@@ -46,6 +50,7 @@ export function parse(
   let strict = false;
 
   let s = value;
+  let parsed = new Decimal(0);
   let parsedAlt = new Decimal(0);
 
   // Assign Options
@@ -85,9 +90,13 @@ export function parse(
     s = s.split(' ').join(g);
   }
 
-  // Try to parse as a normal number
-  const parsed = new Decimal(s.split(g).join('').split(d).join('.'));
-
+  // Try to parse as a POSIX number
+  try {
+    parsed = new Decimal(s.split(g).join('').split(d).join('.'));
+  } catch (error) {
+    throw new Error(`${value} is not a properly formatted decimal number.`);
+  }
+  
   // Check that the number can be re-formatted to original
   if (strict && s.includes(g)) {
     const proper = format(parsed, locale.decimalPattern, { locale });
@@ -95,7 +104,7 @@ export function parse(
       try {
         parsedAlt = new Decimal(s.split(d).join('').split(g).join('.'));
       } catch (error) {
-        if (error instanceof Error && /DecimalError/.test(error.message)) {
+        if (error.message && /DecimalError/.test(error.message)) {
           throw new Error(
             `${value} is not a properly formatted decimal number. Did you mean ${proper}?`
           );

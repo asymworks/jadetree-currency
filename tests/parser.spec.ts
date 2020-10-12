@@ -2,7 +2,10 @@ import { expect, should } from 'chai';
 
 import { parse } from '../src/parser';
 import { Locale } from '../src/locale';
+
+import { de } from '../src/locales/de';
 import { en } from '../src/locales/en';
+import { ru } from '../src/locales/ru';
 
 describe('Number Parser', function() {
   describe('Number Parsing', function() {
@@ -82,5 +85,13 @@ describe('Number Parser', function() {
       expect(testFn1).to.throw();
       expect(testFn2).to.not.throw();
     });
+
+    it('should match documented examples', function() {
+      var testFn = function() { return parse('2,109,998', { locale: de }) };
+      expect(parse('1,099.98', { locale: en }).toString()).to.equal('1099.98');
+      expect(parse('1.099,98', { locale: de }).toString()).to.equal('1099.98');
+      expect(parse('12 345,12', { locale: ru }).toString()).to.equal('12345.12');
+      expect(testFn).to.throw(/2,109,998 is not a properly formatted decimal number/);
+    })
   });
 });
