@@ -96,7 +96,7 @@ async function main(args) {
   if (args.list) {
     ccyList = loadJson(args.list);
   } else {
-    ccyList = Object.keys(await generateList());
+    ccyList = Object.keys((await generateList()).currencies);
   }
 
   // Load Number Locales
@@ -241,45 +241,6 @@ async function main(args) {
       prettierOpts
     )
   )
-
-  // process.stdout.write(JSON.stringify(localeData));
-  // process.stdout.write('\n');
-
-  /*
-  // Sort by Language
-  const langList = {};
-
-  cldrNumbersLocales
-    .map((tag) => {
-      const localeString = generateLocale(tag, '-');
-      return Object.prototype.hasOwnProperty.call(cldrAliases, localeString)
-        ? parseLocale(cldrAliases[localeString], '-')
-        : localeString;
-    })
-    .filter((tag) => !tag.script || tag.script === 'Latn')
-    .forEach((tag) => {
-      const { language, territory, script, variant } = tag;
-      if (Object.prototype.hasOwnProperty.call(langList, language)) {
-        langList[language].push(tag);
-      } else {
-        langList[language] = [tag];
-      }
-    });
-
-
-  // Load the Supported Currency list
-  let ccyList;
-  if (args.list) {
-    ccyList = loadJson(args.list);
-  } else {
-    ccyList = Object.keys(await generateList());
-  }
-
-  // Process Languages
-  //process.stdout.write(JSON.stringify(loadLocaleData(args.tag, ccyList)));
-  process.stdout.write(JSON.stringify(langList));
-  process.stdout.write('\n');
-  */
 }
 
 const parser = new ArgumentParser({

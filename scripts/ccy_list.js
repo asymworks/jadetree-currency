@@ -144,7 +144,10 @@ async function generateList(addCodes = ['XXX']) {
     }
   });
 
-  return ccyList;
+  return {
+    currencies: ccyList,
+    published: iso4217.published,
+  };
 }
 
 module.exports = {

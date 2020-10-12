@@ -10,9 +10,10 @@
   "license": "BSD-2-Clause",
   "private": false,
   "scripts": {
-    "build": "node --experimental-json-modules build",
-    "build-data:ccy": "node scripts/gen_ccy_data.js -o src/lib/ccy-data.ts -l src/lib/ccy-list.ts",
-    "build-data:l10n": "node scripts/gen_l10n_data.js -l scripts/ccy_list.json src/locales",
+    "build": "rm -rf dist && node --experimental-json-modules build",
+    "build-data": "npx yarn build-data:ccy && npx yarn build-data:l10n",
+    "build-data:ccy": "node scripts/gen_ccy_data.js -o ./src/ccy-data.ts",
+    "build-data:l10n": "node scripts/gen_l10n_data.js ./src/locales",
     "docs:html": "documentation build src/*.ts -f html -o docs --parse-extension ts",
     "docs:md": "documentation build src/*.ts -f md --parse-extension ts",
     "docs:serve": "documentation serve --watch src/*.ts --parse-extension ts",

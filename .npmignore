@@ -8,17 +8,16 @@ package-lock.json
 
 # dev
 build
+docs
 scripts
 src
 tests
 .editorconfig
 .eslintrc.js
 .gitignore.js
+.npmignore
 .prettierrc.js
 tsconfig.json
 
-#doc
+# other
 CONTRIBUTING.md
-docs
-
-#other
