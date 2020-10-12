@@ -1,6 +1,6 @@
 {
   "name": "@jadetree/currency",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Localized Currency Library for Jade Tree",
   "main": "dist/cjs/index.js",
   "browser": "dist/jt-currency.min.js",
@@ -8,7 +8,6 @@
   "repository": "https://github.com/asymworks/jadetree-currency",
   "author": "Jonathan Krauss <jkrauss@asymworks.com>",
   "license": "BSD-3-Clause",
-  "private": false,
   "scripts": {
     "build": "rm -rf dist && node --experimental-json-modules build",
     "build-data": "npx yarn build-data:ccy && npx yarn build-data:l10n",

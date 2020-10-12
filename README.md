@@ -57,8 +57,8 @@ yarn add @jadetree/currency
 Contribute
 ----------
 
-- Issue Tracker: https://github.com/asymworks/jt-currency/issues
-- Source Code: https://github.com/asymworks/jt-currency
+- Issue Tracker: https://github.com/asymworks/jadetree-currency/issues
+- Source Code: https://github.com/asymworks/jadetree-currency
 
 API Documentation
 -----------------
