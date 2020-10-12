@@ -1,5 +1,7 @@
 # Library Output
+index.js
 dist/
+locales/
 
 # Logs
 logs
