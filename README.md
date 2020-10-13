@@ -10,21 +10,27 @@ Using jadetree-currency is easy:
 import { Money, Currency, Locale } from '@jadetree/currency';
 
 // Load l10n data from the locales sub-package
-import { de_DE } from '@jadetree/currency/locales/de';
+import { de_AT, de_DE } from '@jadetree/currency/locales/de';
 import { en_US } from '@jadetree/currency/locales/en';
 
 /* CommonJS (Node.js) Syntax */
 const { Money, Currency, Locale } = require('@jadetree/currency');
-const { de_DE } = require('@jadetree/currency/locales/de');
+const { de_AT, de_DE } = require('@jadetree/currency/locales/de');
 const { en_US } = require('@jadetree/currency/locales/en');
+
+// Create a Money Object with USD $4.00
+const m = new Money('4.00', 'USD');
+
+// Add and Subtract Amounts
+const m2 = m.add(1).subtract('0.50');
 
 // Format into a localized string
 m2.format(en_US);     // '$4.50'
 m2.format(de_DE);     // '4,50\u00a0$'
 
 // Localized parsing works too, with default currency for the locale
-const m3 = new Money('1 234,56', new Locale('fr_FR'));
-m3.format(new Locale('en_US'));     // €1,234.56
+const m3 = new Money('1 234,56', de_AT);
+m3.format(en_US);     // €1,234.56
 ```
 
 For use in a browser without additional packaging (e.g. when a backend API can
