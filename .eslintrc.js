@@ -25,6 +25,7 @@ module.exports = {
   ],
   rules: {
     'import/extensions': ['error', { js: 'ignorePackages', ts: 'never' }],
+    'import/prefer-default-export': 'off',
     'lines-between-class-members': 'off',
   },
   settings: {

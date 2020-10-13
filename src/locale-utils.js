@@ -44,7 +44,7 @@ module.exports = {
     }
 
     const parts = ident.split(separator);
-    const language = parts.shift()?.toLowerCase();
+    const language = parts.shift().toLowerCase();
 
     if (!isalpha(language)) {
       throw new Error(`Invalid locale language "${language}"`);

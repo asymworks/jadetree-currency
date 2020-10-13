@@ -1,10 +1,10 @@
 import { expect } from 'chai';
 import Decimal from 'decimal.js-light';
+import { Currency } from '../src/currency';
 import { Locale } from '../src/locale';
 import { de_DE } from '../src/locales/de';
 import { en_US, en_US_POSIX } from '../src/locales/en';
-import Money from '../src/money';
-import Currency from '../src/currency';
+import { Money } from '../src/money';
 
 describe('Money Value Object', function() {
   describe('Constructors', function() {

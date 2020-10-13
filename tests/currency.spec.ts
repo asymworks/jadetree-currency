@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import Currency, { allCurrencies, registerCurrency } from '../src/currency';
+import { Currency } from '../src/currency';
 
 describe('Currency', function() {
   describe('Accessors', function() {
@@ -28,7 +28,7 @@ describe('Currency', function() {
     });
 
     it('should return an array of available currency codes', function() {
-      var ccyList = allCurrencies();
+      var ccyList = Currency.allCurrencies();
       expect(ccyList).to.be.an('array');
       expect(ccyList.length).to.be.at.least(1);
       expect(ccyList[0]).to.be.an('string');
@@ -100,7 +100,7 @@ describe('Currency', function() {
     });
 
     it('should throw an error when a currency is redefiend', function() {
-      var testFn = function() { registerCurrency('USD', 840, 2); }
+      var testFn = function() { Currency.registerCurrency('USD', 840, 2); }
       expect(testFn).to.throw();
     });
 
@@ -110,8 +110,8 @@ describe('Currency', function() {
     });
 
     it('should support adding a new currency', function() {
-      var nCcys = allCurrencies().length;
-      var newCcy = registerCurrency('ZZZ', 998, 3);
+      var nCcys = Currency.allCurrencies().length;
+      var newCcy = Currency.registerCurrency('ZZZ', 998, 3);
       var testObj;
 
       expect(newCcy).to.have.property('currencyCode', 'ZZZ');
@@ -127,7 +127,7 @@ describe('Currency', function() {
       expect(testObj2).to.equal(newCcy);
       expect(testObj2).to.deep.equal(newCcy);
 
-      expect(allCurrencies().length).to.equal(nCcys + 1);
+      expect(Currency.allCurrencies().length).to.equal(nCcys + 1);
     });
   });
 });

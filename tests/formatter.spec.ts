@@ -1,7 +1,7 @@
 import { expect, should } from 'chai';
 import Decimal from 'decimal.js-light';
 
-import Currency from '../src/currency';
+import { Currency } from '../src/currency';
 import { format } from '../src/formatter';
 import { Locale } from '../src/locale';
 import { en, en_US_POSIX } from '../src/locales/en';

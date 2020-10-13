@@ -39,7 +39,7 @@ const ccyRegistry: Registry = Object.create(null);
  * the Currency and Currency.register functions to obtain CurrencyData
  * instances.
  */
-export default class Currency {
+export class Currency {
   private data: CurrencyData | undefined;
 
   /**
@@ -102,46 +102,46 @@ export default class Currency {
   toString(): string {
     return `<Currency '${this.data?.currencyCode}'>`;
   }
-}
 
-/**
- * Define a new {@link Currency} object if it does not already exist and enter
- * it into the runtime currency registry, after which it can be accessed using
- * using the {@link Currency} class.
- *
- * If the currency already exists, an Error will be thrown.
- *
- * @param {String} currencyCode ISO 4127 Currency Code
- * @param {Number} numericCode  ISO 4127 Numeric Code
- * @param {Number} precision    Number of Fractional Digits
- * @return {Currency} New Currency Object
- */
-export function registerCurrency(
-  currencyCode: string,
-  numericCode: number,
-  precision: number
-): Currency {
-  const ucCode = currencyCode.toUpperCase();
-  if (Object.prototype.hasOwnProperty.call(ccyRegistry, ucCode)) {
-    throw new Error(`Currency '${currencyCode}' has already been defined`);
+  /**
+   * Define a new {@link Currency} object if it does not already exist and enter
+   * it into the runtime currency registry, after which it can be accessed using
+   * using the {@link Currency} class.
+   *
+   * If the currency already exists, an Error will be thrown.
+   *
+   * @param {String} currencyCode ISO 4127 Currency Code
+   * @param {Number} numericCode  ISO 4127 Numeric Code
+   * @param {Number} precision    Number of Fractional Digits
+   * @return {Currency} New Currency Object
+   */
+  static registerCurrency(
+    currencyCode: string,
+    numericCode: number,
+    precision: number
+  ): Currency {
+    const ucCode = currencyCode.toUpperCase();
+    if (Object.prototype.hasOwnProperty.call(ccyRegistry, ucCode)) {
+      throw new Error(`Currency '${currencyCode}' has already been defined`);
+    }
+
+    // Add new Currency Data to the Registry
+    ccyRegistry[ucCode] = {
+      data: { currencyCode, numericCode, precision },
+      instance: undefined,
+    };
+
+    // Return the Currency Data object
+    return new Currency(ucCode);
   }
 
-  // Add new Currency Data to the Registry
-  ccyRegistry[ucCode] = {
-    data: { currencyCode, numericCode, precision },
-    instance: undefined,
-  };
-
-  // Return the Currency Data object
-  return new Currency(ucCode);
-}
-
-/**
- * Gets the set of all available currencies.
- * @return {Array} Array of registered {@link Currency} objects
- */
-export function allCurrencies(): string[] {
-  return Object.keys(ccyRegistry);
+  /**
+   * Gets the set of all available currencies.
+   * @return {Array} Array of registered {@link Currency} objects
+   */
+  static allCurrencies(): string[] {
+    return Object.keys(ccyRegistry);
+  }
 }
 
 // Load Currency Data

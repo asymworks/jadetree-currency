@@ -8,6 +8,7 @@ package-lock.json
 
 # dev
 build
+demo
 docs
 scripts
 src

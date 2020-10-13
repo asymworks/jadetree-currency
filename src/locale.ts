@@ -1,4 +1,4 @@
-import Currency from './currency';
+import { Currency } from './currency';
 import { parseLocale } from './locale-utils';
 import { NumberPattern, parsePattern } from './numpattern';
 

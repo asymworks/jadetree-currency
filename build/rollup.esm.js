@@ -16,7 +16,7 @@ module.exports = (config) => {
           tsconfigOverride: {
             compilerOptions: {
               declaration: declarations,
-              target: 'es6',
+              target: 'es5',
             },
           },
         }),
@@ -25,6 +25,7 @@ module.exports = (config) => {
     output: {
       format: 'esm',
       dir: outputDir,
+      exports: 'named',
       preserveModules: true,
       sourcemap: false,
     },

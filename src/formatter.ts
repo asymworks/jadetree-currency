@@ -1,6 +1,6 @@
 import Decimal from 'decimal.js-light';
 
-import Currency from './currency';
+import { Currency } from './currency';
 import { Locale } from './locale';
 import rootLocale from './locales/root';
 import { parsePattern, NumberPattern, PrecisionLimits } from './numpattern';

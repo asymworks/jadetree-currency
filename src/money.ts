@@ -1,7 +1,7 @@
 import Decimal from 'decimal.js-light';
-import Currency from './currency';
+import { Currency } from './currency';
 import { Locale } from './locale';
-import { default as rootLocale } from './locales/root';
+import rootLocale from './locales/root';
 import { format } from './formatter';
 import { parse } from './parser';
 
@@ -12,7 +12,7 @@ type MoneyAmount = Money | Decimal | number | string;
 /**
  *
  */
-export default class Money {
+export class Money {
   private amt: Decimal;
   private ccy: Currency;
 
