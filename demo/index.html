@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jade Tree Currency Demo</title>
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/pure-min.css">
+  <link rel="stylesheet" href="css/demo.css">
+  <script type="text/javascript" src="https://unpkg.com/@jadetree/currency/index.min.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/@jadetree/currency/locales/de.min.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/@jadetree/currency/locales/en.min.js"></script>
+  <script type="text/javascript" src="https://unpkg.com/@jadetree/currency/locales/fr.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.7.0/dist/alpine.min.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>@jadetree/currency demo</h1>
+    <h2>Localized Currency Library Testbed</h2>
+    <p>This page contains a short demo of the localized currency formatting
+    and parsing functionality of the <code>@jadetree/currency</code> library.</p>
+  </header>
+  <div class="content" x-data="data">
+    <div class="pure-g">
+      <div class="pure-u-7-12">
+        <div class="inner-content">
+          <h2>Select Locale and Amount</h4>
+          <form class="pure-form pure-form-aligned">
+            <fieldset>
+              <div class="pure-control-group">
+                <label for="locale">Locale</label>
+                <select x-model="localeTag">
+                  <template x-for="_locale in allLocales">
+                    <option :value="_locale.tag" :key="_locale.tag" :selected="localeTag === _locale.tag" x-text="_locale.tag"></option>
+                  </template>
+                </select>
+              </div>
+              <div class="pure-control-group">
+                <label for="currency">Currency</label>
+                <select x-model="currencyCode">
+                  <template x-for="ccyCode in allCurrencies">
+                    <option :value="ccyCode" :key="ccyCode" :selected="currencyCode === ccyCode" x-text="`${ccyCode}: ${locale.currencyName(ccyCode)}`"></option>
+                  </template>
+                </select>
+              </div>
+            </fieldset>
+            <fieldset>
+              <div class="pure-control-group">
+                <label for="amount">Amount</label>
+                <input type="tel" x-model="amountString" @blur="amountBlur" />
+                <p x-show="parseError" x-text="parseMessage" style="color: #800;"></p>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+        <div class="inner-content">
+          <h2>How to Use</h2>
+          <p>First select the desired locale and currency, then enter an amount into the
+          amount field. The formatted value appears below, localized for the selected
+          locale. Number parsing is also localized, so entering <code>1,23</code> is
+          an error in the <code>en-US</code> locale, but a valid decimal number in
+          the <code>de-DE</code> locale.</p>
+
+          <p>The page by default only loads data for English, French, and German
+          speaking locales. To add additional languages, open the page source and
+          add a <code>&lt;script&gt;</code> tag pointing to
+          <code>https://unpkg.com/@jadetree/currency/locales/{{ lang }}.min.js</code>
+          (where <code>{{lang}}</code> is the two-letter ISO 3166 language code)
+          immediately after the ones for <code>en</code>, <code>fr</code>, and
+          <code>de</code>.
+        </div>
+      </div>
+      <div class="pure-u-5-12">
+        <div class="inner-content">
+          <h2>Formatted Currency</h2>
+          <div id="error">Error Message</div>
+          <table class="nvlps-results pure-table pure-table-horizontal">
+            <tbody>
+              <tr><th>Parsed to POSIX</th><td x-text="fmtPosix"></td></tr>
+              <tr><th>Formatted as Number</th><td x-text="fmtNumber"></td></tr>
+              <tr><th>Formatted as Currency</th><td x-text="fmtCurrency"></td></tr>
+              <tr><th>Formatted as Accounting</th><td x-text="fmtAccounting"></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="inner-content">
+          <h2>Locale Data</h2>
+          <table class="nvlps-table pure-table pure-table-horizontal">
+            <tbody>
+              <!-- Currency Formatting -->
+              <tr><th>Currency Code</th><td x-text="currency.currencyCode"></tr>
+              <tr><th>Currency Symbol</th><td x-text="locale.currencySymbol(currency)"></td></tr>
+
+              <!-- Number Formatting -->
+              <tr><th>Decimal Symbol</th><td x-text="locale.decimal"></td></tr>
+              <tr><th>Grouping Symbol</th><td x-text="locale.group"></td></tr>
+              <tr><th>Number Format</th><td x-text="locale.decimalPattern.pattern"></td></tr>
+              <tr><th>Currency Format</th><td x-text="locale.currencyPattern.pattern"></td></tr>
+              <tr><th>Accounting Format</th><td x-text="locale.accountingPattern.pattern"></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const POSIX = jadetree_currency_l10n_en.en_US_POSIX;
+    const USD = new jadetree_currency.Currency('USD');
+    const data = {
+      locale: jadetree_currency_l10n_en.en_US,
+      currency: USD,
+      amountString: '',
+      amountValue: 0,
+      money: new jadetree_currency.Money(0, USD),
+      parseError: false,
+      parseMessage: '',
+      langsLoaded: [ 'en' ],
+      get allCurrencies() {
+        return jadetree_currency.allCurrencies();
+      },
+      get allLocales() {
+        const locales = [];
+        this.langsLoaded.forEach((lang) => {
+          const locale = window[`jadetree_currency_l10n_${lang}`];
+          if (locale) {
+            Object.values(locale).forEach((L) => locales.push(L));
+          }
+        });
+        return [...new Set(locales.sort((a, b) => (a.tag < b.tag)))];
+      },
+      get currencyCode() {
+        return this.currency.currencyCode;
+      },
+      set currencyCode(value) {
+        this.currency = new jadetree_currency.Currency(value);
+      },
+      get fmtAccounting() {
+        if (this.parseError) {
+          return 'Error';
+        }
+        return this.money.format(this.locale, 'accounting');
+      },
+      get fmtCurrency() {
+        if (this.parseError) {
+          return 'Error';
+        }
+        return this.money.format(this.locale, 'standard');
+      },
+      get fmtNumber() {
+        if (this.parseError) {
+          return 'Error';
+        }
+        return jadetree_currency.format(this.amountValue, this.locale.decimalPattern, { locale: this.locale });
+      },
+      get fmtPosix() {
+        if (this.parseError) {
+          return 'Error';
+        }
+        return jadetree_currency.format(this.amountValue, POSIX.decimalPattern, { locale: POSIX });
+      },
+      get langsLoaded() {
+        return Object.keys(window).filter((k) => /^jadetree_currency_l10n_\w{2,3}$/.test(k)).map((tag) => tag.split('_')[3]);
+      },
+      get localeTag() {
+        return this.locale.tag;
+      },
+      set localeTag(v) {
+        const { language } = jadetree_currency.parseLocale(v);
+        const langObject = window[`jadetree_currency_l10n_${language}`];
+        if (langObject && langObject.hasOwnProperty(v)) {
+          this.locale = langObject[v];
+        }
+      },
+      amountBlur() {
+        try {
+          const parsed = jadetree_currency.parse(this.amountString, { locale: this.locale, strict: true })
+          this.amountValue = parsed;
+          this.amountString = jadetree_currency.format(parsed, this.locale.decimalPattern, { locale: this.locale });
+          this.money = new jadetree_currency.Money(parsed, this.currency);
+          this.parseError = false;
+        } catch (e) {
+          this.parseError = true;
+          this.parseMessage = e.toString();
+        }
+      },
+    };
+  </script>
+</body>
+</html>
