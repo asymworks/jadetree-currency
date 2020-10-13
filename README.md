@@ -57,7 +57,6 @@ git clone https://github.com/asymworks/jadetree-currency.git
 cd jadetree-currency/demo
 open index.html
 ```
->>>>>>> money
 
 Features
 --------
