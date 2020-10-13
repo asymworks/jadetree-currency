@@ -290,12 +290,8 @@ export function format(
   }
 
   if (options && options.currency) {
-    if (options.currency instanceof Currency) {
-      currency = options.currency;
-    } else {
-      currency = new Currency(options.currency);
-    }
-    if (options.currencyDigits) {
+    currency = new Currency(options.currency);
+    if (typeof options.currencyDigits !== 'undefined') {
       currencyDigits = !!options.currencyDigits;
     }
   }

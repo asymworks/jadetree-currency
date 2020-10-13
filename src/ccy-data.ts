@@ -157,7 +157,7 @@ const ccyData: { [key: string]: { n: number; p: number } } = {
   YER: { n: 886, p: 2 },
   ZAR: { n: 710, p: 2 },
   ZMW: { n: 967, p: 2 },
-  XXX: { n: 999, p: 0 },
+  XXX: { n: 999, p: 6 },
 };
 
 export default ccyData;

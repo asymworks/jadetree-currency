@@ -93,7 +93,7 @@ describe('Number Formatter', function() {
           locale: en,
           currency: new Currency('XXX'),
         }
-      )).to.equal('¤\u00a01,234,568');
+      )).to.equal('¤\u00a01,234,567.890000');
     });
 
     it('should pad numbers to minimum length', function() {

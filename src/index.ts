@@ -4,6 +4,7 @@ export {
   registerCurrency,
   allCurrencies,
 } from './currency';
+export { default as Money } from './money';
 export { Locale, LocaleData } from './locale';
 export { parseLocale, generateLocale } from './locale-utils';
 export { format, FormatOptions } from './formatter';
