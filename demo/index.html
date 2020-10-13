@@ -56,16 +56,16 @@
         <div class="inner-content">
           <h2>How to Use</h2>
           <p>First select the desired locale and currency, then enter an amount into the
-          amount field. The formatted value appears below, localized for the selected
+          amount field. The formatted value appears to the right, localized for the selected
           locale. Number parsing is also localized, so entering <code>1,23</code> is
           an error in the <code>en-US</code> locale, but a valid decimal number in
-          the <code>de-DE</code> locale.</p>
+          the <code>en-DE</code> locale.</p>
 
           <p>The page by default only loads data for English, French, and German
           speaking locales. To add additional languages, open the page source and
           add a <code>&lt;script&gt;</code> tag pointing to
           <code>https://unpkg.com/@jadetree/currency/locales/{{ lang }}.min.js</code>
-          (where <code>{{lang}}</code> is the two-letter ISO 3166 language code)
+          (where <code>{{ lang }}</code> is the two-letter ISO 3166 language code)
           immediately after the ones for <code>en</code>, <code>fr</code>, and
           <code>de</code>.
         </div>
