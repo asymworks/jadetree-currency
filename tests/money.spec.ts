@@ -279,7 +279,7 @@ describe('Money Value Object', function() {
       var m1 = new Money(1234567.89, 'EUR');
       var m2 = new Money(-3.50, 'CAD');
 
-      expect(m1.format()).to.equal('€\u00a01234567.89');
+      expect(m1.format()).to.equal('€\u00a01,234,567.89');
       expect(m1.format(en_US_POSIX, 'accounting')).to.equal('€1,234,567.89');
       expect(m1.format(en_US)).to.equal('€1,234,567.89');
       expect(m1.format(en_US, 'accounting')).to.equal('€1,234,567.89');

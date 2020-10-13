@@ -1,8 +1,7 @@
 import Decimal from 'decimal.js-light';
 import Currency from './currency';
 import { Locale } from './locale';
-// eslint-disable-next-line camelcase
-import { en_US_POSIX } from './locales/en';
+import { default as rootLocale } from './locales/root';
 import { format } from './formatter';
 import { parse } from './parser';
 
@@ -296,7 +295,7 @@ export default class Money {
    * @param {Locale} locale locale to use for formatting (default is POSIX)
    * @param {String} formatType either 'standard' or 'accounting'
    */
-  format(locale: Locale = en_US_POSIX, formatType = 'standard'): string {
+  format(locale: Locale = rootLocale, formatType = 'standard'): string {
     let fmtPattern = locale.currencyPattern;
     if (formatType === 'accounting') {
       fmtPattern = locale.accountingPattern;
