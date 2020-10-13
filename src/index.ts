@@ -1,3 +1,8 @@
+/**
+ * @packageDocumentation
+ * @internal
+ */
+
 export { NumberPattern, parsePattern } from './numpattern';
 export { Currency } from './currency';
 export { Money } from './money';

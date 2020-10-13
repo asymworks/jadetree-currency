@@ -5,19 +5,46 @@ import rootLocale from './locales/root';
 import { format } from './formatter';
 import { parse } from './parser';
 
-// Money Amount Type
+/**
+ * Money Amount shortcut type which holds all the potential types which can be
+ * cast into an amount of money.
+ */
 // eslint-disable-next-line no-use-before-define
 type MoneyAmount = Money | Decimal | number | string;
 
 /**
- *
+ * Represents an amount of a single specific currency, and provides common
+ * manipulation operations. The API is quite lightweight and is derived from the
+ * `Money` class in _Patterns of Enterprise Application Architecture_.
  */
 export class Money {
+  /** Amount of Money */
   private amt: Decimal;
+
+  /** Type of Currency */
   private ccy: Currency;
 
   /**
+   * Create a new Money object from an amount of money and currency. If no
+   * currency is provided, the Unknown Currency (`XXX`) is used by default.
    *
+   * When a string value is passed as the `amount` parameter, a locale may be
+   * provided to interpret the value as a localized decimal number. If the
+   * locale is not provided, the root locale (POSIX-like) is used. For example:
+   *
+   * ```typescript
+   * import { Money } from '@jadetree/currency';
+   * import { de_DE } from '@jadetree/currency/locales/de';
+   * import { en_US } from '@jadetree/currency/locales/en';
+   *
+   * new Money('1,234.56', 'USD', en_US).toString();  // '<1,234.560000 USD>'
+   * new Money('1.234,56', 'EUR', de_DE).toString();  // '<1,234.560000 EUR>'
+   * new Money('1,234.56').toString();                // '<1,234.560000 XXX>'
+   * ```
+   *
+   * @param amount Amount of Money
+   * @param currency Type of Currency
+   * @param locale
    */
   constructor(
     amount: MoneyAmount,
@@ -59,26 +86,29 @@ export class Money {
     Object.freeze(this.ccy);
   }
 
-  /** Currency Object */
-  get currency(): Currency {
-    return this.ccy;
-  }
-
-  /** Decimal value */
+  /**
+   * Amount of money rounded to the nearest currency precision unit
+   */
   get amount(): Decimal {
     return this.amt.todp(this.ccy.precision);
   }
 
+  /** Type of currency */
+  get currency(): Currency {
+    return this.ccy;
+  }
+
   /**
    * Add a Money Value to this Money Value
-   * @param {Money|Decimal|Numeric|String} otherAmt amount to add
-   * @return {Money} new Money object
    *
    * Adds the other money amount to this money amount and returns a new Money
    * object with the result. If the other money amount has no currency value
    * (or is a Decimal or plain numeric value), the resulting money will have
    * the same currency as this. If the other money amount has a currency which
    * is different than this, an exception is raised.
+   *
+   * @param otherAmt amount to add
+   * @return new Money object
    */
   add(otherAmt: MoneyAmount): Money {
     if (otherAmt instanceof Money) {
@@ -97,14 +127,15 @@ export class Money {
 
   /**
    * Subtract a Money Value to this Money Value
-   * @param {Money|Decimal|Numeric|String} otherAmt amount to subtract
-   * @return {Money} new Money object
    *
    * Subtracts the other money amount to this money amount and returns a new
    * Money object with the result. If the other money amount has no currency
    * value (or is a Decimal or plain numeric value), the resulting money will
    * have the same currency as this. If the other money amount has a currency
    * which is different than this, an exception is raised.
+   *
+   * @param otherAmt amount to subtract
+   * @return new Money object
    */
   subtract(otherAmt: MoneyAmount): Money {
     if (otherAmt instanceof Money) {
@@ -123,11 +154,8 @@ export class Money {
 
   /**
    * Multiply a Money Value with a Number
-   * @param {Decimal|Numeric|String} factor amount by which to multiply
-   * @param {Number} roundingMode Decimal Rounding Mode
-   * @return {Money} new Money object
    *
-   * Multiplies ththis money amount by a factor and returns a new Money object
+   * Multiplies this money amount by a factor and returns a new Money object
    * with the result. The other amount must be a plain number (or Decimal)
    * object; it does not make sense to multiply currencies.
    *
@@ -135,6 +163,10 @@ export class Money {
    * uses half-up rounding (i.e. towards nearest neighbor, with half values
    * rounding away from zero). This can be overridden using Decimal rounding
    * constants (e.g. Decimal.ROUND_HALF_EVEN).
+   *
+   * @param factor amount by which to multiply
+   * @param roundingMode Decimal Rounding Mode
+   * @return new Money object
    */
   multiply(
     factor: Decimal | string | number,
@@ -149,8 +181,8 @@ export class Money {
 
   /**
    * Allocate Money Evenly into Groups
-   * @param {Array} ratios ratios to allocate
-   * @return {Array} array of allocated values
+   * @param ratios ratios to allocate
+   * @return array of allocated values
    */
   distributeRatios(ratios: number[]): Money[] {
     const prec: number = this.ccy.precision || 6;
@@ -206,10 +238,8 @@ export class Money {
 
   /**
    * Allocate Money into multiple groups
-   * @param {Number|Array} n number of groups among which to allocate, or array
-   *                         of ratios.
-   * @return {Array} array of allocated values
-   *
+   * @param n number of groups among which to allocate, or array of ratios.
+   * @return array of allocated values
    */
   distribute(n: number | number[]): Money[] {
     if (typeof n === 'number') {
@@ -220,8 +250,6 @@ export class Money {
 
   /**
    * Compare two Money Values
-   * @param {Money|Decimal|Numeric|String} otherAmt amount to compare
-   * @return {Numeric} result
    *
    * Returns 0 if the money values are equal and have the same currency.
    * Returns 1 if the value of this Money is greater than otherAmt.
@@ -229,6 +257,9 @@ export class Money {
    *
    * If the otherAmt has a different currency than this, an exception is
    * raised.
+   *
+   * @param otherAmt amount to compare
+   * @return result
    */
   cmp(otherAmt: MoneyAmount): number {
     if (otherAmt instanceof Money) {
@@ -292,8 +323,8 @@ export class Money {
 
   /**
    * Format the Money as a localized currency string
-   * @param {Locale} locale locale to use for formatting (default is POSIX)
-   * @param {String} formatType either 'standard' or 'accounting'
+   * @param locale locale to use for formatting (default is the root locale)
+   * @param formatType either 'standard' or 'accounting'
    */
   format(locale: Locale = rootLocale, formatType = 'standard'): string {
     let fmtPattern = locale.currencyPattern;
@@ -311,10 +342,8 @@ export class Money {
   }
 
   /**
-   * @return {String} String Representation of the Money
-   *
    * Returns a string representation of the money of the form
-   * "<XXX ##.###>" where "XXX" is the three-letter ISO 4127 Currency Code.
+   * `#,##0.000000 ¤¤`
    */
   toString(): string {
     const amtString = format(this.amount, '#,##0.000000 ¤¤', {

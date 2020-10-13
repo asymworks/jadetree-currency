@@ -3,12 +3,6 @@ const isalpha = (s) => !!s.match(/^[A-Za-z]+$/);
 const isdigit = (s) => !!s.match(/^\d+$/);
 
 module.exports = {
-  /**
-   * Generate a Locale Identifier from its parts
-   * @param {Object} parts object with language, territory, script, and variant keys
-   * @param {String} separator separator character (defaults to "_")
-   * @return {String} locale identifier
-   */
   generateLocale(parts, separator = '_') {
     const { language, territory, script, variant } = parts;
 
@@ -20,13 +14,6 @@ module.exports = {
       .filter((x) => x)
       .join(separator);
   },
-
-  /**
-   * Parse a Locale Identifier into its parts
-   * @param {String} identifier locale identifier
-   * @param {String} separator separator character (defaults to "_")
-   * @return {Object} object with language, territory, script, and variant keys
-   */
   parseLocale(identifier, separator = '_') {
     let ident = identifier;
     let script;

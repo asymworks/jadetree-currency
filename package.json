@@ -1,6 +1,6 @@
 {
   "name": "@jadetree/currency",
-  "version": "0.8.7",
+  "version": "0.8.8",
   "description": "Localized Currency Library for Jade Tree",
   "main": "./index.js",
   "module": "lib/index.js",
@@ -10,9 +10,10 @@
   "scripts": {
     "build": "rm -rf index.js index.*.js index.*.map lib locales && node --experimental-json-modules build",
     "build-data": "npx yarn build-data:ccy && npx yarn build-data:l10n",
-    "build-data:ccy": "node scripts/gen_ccy_data.js -o ./src/ccy-data.ts",
-    "build-data:l10n": "node scripts/gen_l10n_data.js ./src/locales",
+    "build-data:ccy": "node scripts/gen_ccy_data.js -o ./src/ccy-data.ts -d ./docs/data/currency-list.md",
+    "build-data:l10n": "node scripts/gen_l10n_data.js -d ./docs/data/locale-list.md ./src/locales",
     "clean": "rm -rf index.js index.*.js index.*.map lib locales",
+    "clean-data": "rm docs/data/currency-list.md docs/data/locale-list.md src/ccy-list.ts src/locales/*.ts",
     "docs:html": "documentation build src/*.ts -f html -o docs --parse-extension ts",
     "docs:md": "documentation build src/*.ts -f md --parse-extension ts",
     "docs:serve": "documentation serve --watch src/*.ts --parse-extension ts",
@@ -51,6 +52,8 @@
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.27.3",
     "ts-node": "^9.0.0",
+    "typedoc": "^0.19.2",
+    "typedoc-plugin-markdown": "^3.0.8",
     "typescript": "^4.0.3",
     "xml2js": "^0.4.23"
   },

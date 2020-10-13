@@ -26,10 +26,26 @@ function computeScale(pattern: NumberPattern): number {
   return 0;
 }
 
-/** @private */
+/**
+ * Holds the results of conversion to scientific notation.  For example 0.00023
+ * might get converted into
+ * ```typescript
+ * {
+ *   value: new Decimal('2.3'),
+ *   exp: -4,
+ *   expSign: '-',
+ * }
+ * ```
+ * @private
+ */
 interface ScientificParts {
+  /** Scaled Value */
   value: Decimal;
+
+  /** Exponential Power */
   exp: number;
+
+  /** Exponential Sign */
   expSign: string;
 }
 
@@ -74,13 +90,14 @@ function scientificNotationElements(
 }
 
 /**
+ * Format the integer part of a number by adding grouping symbols
+ * @param pattern parsed number pattern
+ * @param value ungrouped number string
+ * @param min minimum number of characters
+ * @param max maximum number of characters
+ * @param locale locale to use for grouping symbol
+ * @return formatted number string
  * @private
- * @param {NumberPattern|string} pattern parsed number pattern
- * @param {String} value
- * @param {Number} min Minimum Number of Characters
- * @param {Number} max Maximum Number of Characters
- * @param {String} locale Locale
- * @return {String} Integer Part
  */
 function formatInt(
   pattern: NumberPattern,
@@ -109,17 +126,17 @@ function formatInt(
 }
 
 /**
- * @private
- * @param {NumberPattern|string} pattern parsed number pattern
- * @param {String} value Fractional Part as a String
- * @param {String} locale Locale
- * @param {PrecisionLimits} force_prec Force Precision Limits
- * @return {String} Decimal Part
- *
  * Zero-pad the right side of the string to meet the minumum number of
  * digits specified in the precision.  Extra trailing zeros are removed,
  * but the string is otherwise not truncated.  The decimal symbol is added
  * to the returned string.
+ *
+ * @param pattern parsed number pattern
+ * @param value ungrouped number string
+ * @param locale locale to use for decimal symbol
+ * @param force_prec override pattern-derived precision limits
+ * @return formatted number string
+ * @private
  */
 function formatFrac(
   pattern: NumberPattern,
@@ -146,10 +163,7 @@ function formatFrac(
 }
 
 /**
- * @private
- * @param {Decimal} value Number to Format
- * @param {Number} min Minimum Number of Significant Digits
- * @param {Number} max Maximum Number of Significant Digits
+ * Format a number with a given number of significant digits.
  *
  * Conceptually, the implementation of this method can be summarized in the
  * following steps:
@@ -166,6 +180,12 @@ function formatFrac(
  *
  *   - Restore the original position of the decimal point, potentially
  *     padding with zeroes on either side
+ *
+ * @param value number to format
+ * @param min minimum number of significant digits
+ * @param max maximum number of significant digits
+ * @return formatted number string
+ * @private
  */
 function formatSignificant(value: Decimal, min: number, max: number): string {
   const exp = value.exponent();
@@ -200,16 +220,16 @@ function formatSignificant(value: Decimal, min: number, max: number): string {
 }
 
 /**
- * @private
- * @param {NumberPattern|string} pattern parsed number pattern
- * @param {Decimal} value value to quantize
- * @param {String} locale locale object
- * @param {PrecisionLimits} frac_prec fractional part precision limits
- *
- * This method handles the main legwork of formatting the number part of the
+ * This function handles the main legwork of formatting the number part of the
  * pattern into a string which has the correct minimum precision on both
  * integer and fractional parts, with the localized decimal and grouping
  * symbols.
+ *
+ * @param pattern parsed number pattern
+ * @param value value to quantize
+ * @param locale locale to use for grouping and decimal symbols
+ * @param force_prec override pattern-derived precision limits
+ * @private
  */
 function quantizeValue(
   pattern: NumberPattern,
@@ -231,30 +251,39 @@ function quantizeValue(
 
 /**
  * Format Options
- * @param {Locale} locale locale to use for number symbols
- * @param {Currency} currency currency, if any, to format as
- * @param {Boolean} currencyDigits whether or not to use the currency's
- *                                 precision. If false, the pattern's
- *                                 precision will be used.
- * @param {Boolean} quantize whether decimal numbers should be forcibly
- *                           quantized to produce a formatted output strictly
- *                           matching the CLDR definition for the locale
  */
 export interface FormatOptions {
-  locale?: Locale | undefined;
-  currency?: Currency | string | undefined;
-  currencyDigits?: boolean | undefined;
-  quantize?: boolean | undefined;
+  /** Locale to use for numeric formatting symbols */
+  locale?: Locale;
+
+  /** Currency, if any, to provide to the formatting pattern */
+  currency?: Currency | string;
+
+  /**
+   * Whether or not to use the currency's precision.  If set to `false`, the
+   * pattern's precision is used.  This defaults to `true` if not provided in
+   * the `options` parameter to `format()`.
+   */
+  currencyDigits?: boolean;
+
+  /**
+   * Whether decimal numbers should be forcibly quantized to produce a formatted
+   * output strictly matching the CLDR definition for the locale. If set to
+   * `false`, the returned fractional part string may exceed the allowed length
+   * of the number pattern. This defaults to `true` if not provided in the
+   * `options` parameter to `format()`.
+   */
+  quantize?: boolean;
 }
 
 /**
  * Format a Number with a {@link NumberPattern}
  *
- * @param {Numeric|Decimal} value numeric value to format. If this is not a
- *                                Decimal object, it will be cast to one.
- * @param {NumberPattern|string} pattern parsed number pattern
- * @param {FormatOptions} options Formatting Options
- * @return {String} formatted decimal string
+ * @param value numeric value to format. If this is not a Decimal object, it
+ *  will be cast to one.
+ * @param pattern parsed number pattern
+ * @param options formatting options
+ * @return formatted numeric string
  */
 export function format(
   value: Decimal | number | string,

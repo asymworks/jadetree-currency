@@ -135,6 +135,10 @@ async function generateList(addCodes = ['XXX']) {
     }
   });
 
+  // Ensure 'XXX' has precision of 6, not 0 as defualt (this is an internal
+  // Jade Tree requirement to show full precision on unknown currency numbers)
+  iso4217.currencies.XXX.precision = 6;
+
   // Filter currencies by what xe.com believes is currently in circulation
   xeList.forEach((ccy) => {
     if (iso4217.currencies[ccy]) {

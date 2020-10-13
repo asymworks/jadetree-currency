@@ -1,15 +1,4 @@
-/**
- * Splits a string into a list, starting from the right.
- * @param  {String} string String to Split
- * @param  {String} separator Optional. Specifies the character, or the regular
- *                      expression, to use for splitting the string. If
- *                      omitted, the entire string will be returned (an array
- *                      with only one item)
- * @param  {Number} maxsplit Optional. An integer that specifies the number of
- *                           splits, items after the split limit will not be
- *                           included in the array
- * @return {Array}
- */
+/** @internal */
 function rsplit(string: string, separator: string, maxsplit: number): string[] {
   const split = string.split(separator);
   return maxsplit
@@ -17,32 +6,31 @@ function rsplit(string: string, separator: string, maxsplit: number): string[] {
     : split;
 }
 
-/**
- * @constant Unicode CLDR Number Pattern Regular Expression
- * @type {NumberFormatRegEx}
- */
+/** @internal */
 const RE_NUMBER_FORMAT = /(?<prefix>(?:'[^']*'|[^\d#,.@])*)(?<number>[\d#+,.@E]*)(?<suffix>.*)/;
 
 /**
- * @typedef {PatternParts}
- * @type {object}
- * @property {String} prefix Number Prefix String
- * @property {String} number Number Pattern
- * @property {String} suffix Number Suffix String
+ * Top level parsed elements of a Unicode Number Pattern
  */
 export interface PatternParts {
+  /** Pattern Number Format */
   number: string;
+
+  /** Pattern Prefix */
   prefix: string;
+
+  /** Pattern Suffix */
   suffix: string;
 }
 
 /**
  * Match a Unicode CLDR Number Format Pattern
- * @param  {String} pattern Unicode CLDR Number Pattern
- * @return {PatternParts} Pattern Parts
  *
  * Each Unicode CLDR Number Format is expected to be formatted as an optional
  * prefix string, the number format itself, and an optional suffix string.
+ *
+ * @param pattern Unicode CLDR Number Pattern
+ * @return Pattern Parts
  */
 export function matchNumber(pattern: string): PatternParts {
   const rv = pattern.match(RE_NUMBER_FORMAT);
@@ -61,20 +49,21 @@ export function matchNumber(pattern: string): PatternParts {
 }
 
 /**
- * @typedef {PrecisionLimits}
- * @type {object}
- * @property {Number} min Minimum Allowed Digits
- * @property {Number} max Maximum Allowed Digits
+ * Precision limits for a number primitive in a number pattern
  */
 export interface PrecisionLimits {
+  /** Minimum allowed digits in the primitive string */
   min: number;
+
+  /** Maximum allowed digits in the primitive string */
   max: number;
 }
 
 /**
  * Calculate the Minimum and Maximum Allowed Digits in a Number
- * @param  {String} pattern Number Format String
- * @return {PrecisionLimits} Calculated Precision Limits
+ *
+ * @param pattern Number Format String
+ * @return Calculated Precision Limits
  */
 export function parsePrecision(pattern: string): PrecisionLimits {
   let min = 0;
@@ -99,30 +88,29 @@ export function parsePrecision(pattern: string): PrecisionLimits {
 }
 
 /**
- * @typedef {GroupingSizes}
- * @type {object}
- * @property {Number} primary Number of Digits in Primary Groups
- * @property {Number} secondary Number of Digits in each Secondary Group
+ * Grouping sizes for a number pattern
  */
 export interface GroupingSizes {
+  /** Number of digits in the primary (first) group */
   primary: number;
+
+  /** Number of digits in the secondary groups */
   secondary: number;
 }
 
 /**
- * Calculate Primary and Secondary Grouping Lengths
- * @param  {String} pattern Number Format String
- * @return {GroupingSizes} Calculated Grouping Sizes
+ * Calculate Primary and Secondary Grouping Lengths. Invalid grouping patterns
+ * will result in a "near-infinite" grouping length of 1000 characters, which
+ * means no grouping symbols will be inserted.
  *
- * @example <caption>Default or Invalid Grouping</caption>
- * // returns { primary: 1000, secondary: 1000 }
- * parseGrouping('##')
- * @example <caption>Thousands-based Grouping</caption>
- * // returns { primary: 3, secondary: 3 }
- * parseGrouping('#,##0')
- * @example <caption>Indian Vedic Grouping</caption>
- * // returns { primary: 2, secondary: 2 }
- * parseGrouping('#,##,##0')
+ * ```typescript
+ * parseGrouping('##');       // Invalid: returns { primary: 1000, secondary: 1000 }
+ * parseGrouping('#,##0');    // returns { primary: 3, secondary: 3 }
+ * parseGrouping('#,##,##0'); // returns { primary: 3, secondary: 2}
+ * ```
+ *
+ * @param pattern Number Format String
+ * @return Calculated Grouping Sizes
  */
 export function parseGrouping(pattern: string): GroupingSizes {
   const width = pattern.length;
@@ -145,38 +133,44 @@ export function parseGrouping(pattern: string): GroupingSizes {
 }
 
 /**
- * @typedef {NumberPattern}
- * @type {object}
- * @property {String} pattern Number Pattern which was Parsed
- * @property {String} pPrefix Positive Number Prefix String
- * @property {String} pSuffix Positive Number Suffix String
- * @property {String} nPrefix Negative Number Prefix String
- * @property {String} nSuffix Negative Number Suffix String
- * @property {GroupingSizes} grouping Number Grouping Sizes
- * @property {PrecisionLimits} iPrec Integer Part Precision Limits
- * @property {PrecisionLimits} fPrec Fractional Part Precision Limits
- * @property {PrecisionLimits} ePrec Exponent Part Precision Limits
- * @property {Boolean} ePlus Exponent Part requires a Plus Sign
+ * Holds the parsed parts of a Unicode number pattern
  */
 export interface NumberPattern {
+  /** Number Pattern which was Parsed */
   pattern: string;
+
+  /** Positive Number Prefix String */
   pPrefix: string;
+
+  /** Positive Number Suffix String */
   pSuffix: string;
+
+  /** Negative Number Prefix String */
   nPrefix: string;
+
+  /** Negative Number Suffix String */
   nSuffix: string;
+
+  /** Number Grouping Sizes */
   grouping: GroupingSizes;
+
+  /** Integer Part Precision Limits */
   intPrec: PrecisionLimits;
+
+  /** Fractional Part Precision Limits */
   fracPrec: PrecisionLimits;
+
+  /** Exponential Part Precision Limits */
   expPrec: PrecisionLimits | undefined;
+
+  /** Exponent Part requires a Plus Sign */
   expPlus: boolean;
 }
 
 /**
  * Parse a Unicode CLDR Number or Currency Format String
- * @param  {String} pattern Number Pattern String
- * @return {NumberPattern}
- *
- * Parses a Unicode CLDR Number Format string into its component parts
+ * @param pattern Number Pattern string
+ * @return parse results
  */
 export function parsePattern(pattern: string): NumberPattern {
   // Parser Results

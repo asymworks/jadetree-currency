@@ -11,36 +11,39 @@ import rootLocale from './locales/root';
  *                         are accepted or rejected
  */
 export interface ParseOptions {
-  locale?: Locale | undefined;
-  strict?: boolean | undefined;
+  /** locale to use for number symbols */
+  locale?: Locale;
+
+  /**
+   * controls whether numbers formatted in a weird way are accepted or rejected
+   */
+  strict?: boolean;
 }
 
 /**
- * Parse a String into a Numeric Decimal value
- * @param {String} value string to Parse
- * @param {ParseOptions} options parse options
- * @return {Decimal} parsed number
- *
  * Parses a string representation of a number into a numeric value, using the
  * number formatting rules of this locale (specifically decimal and grouping
  * symbols). When the given string cannot be parsed, an error is thrown.
  *
- * @example
+ * Examples:
+ * ```typescript
  * import { de } from '@jadetree/currency/locales/de';
  * import { en } from '@jadetree/currency/locales/en';
  * import { ru } from '@jadetree/currency/locales/ru';
- * // Returns Decimal(1099.98)
- * parse('1,099.98', { locale: en });
- * // Returns Decimal(1099.98)
- * parse('1.099,98', { locale: de });
- * // Returns Decimal(12345.12)
- * parse('12 345,12', { locale: ru });
  *
- * When the given string cannot be parsed, an exception is raised:
- * @example
- * // Error('2,109,998 is not a properly formatted decimal number')
+ * parse('1,099.98', { locale: en });   // returns Decimal(1099.98)
+ * parse('1.099,98', { locale: de });   // returns Decimal(1099.98)
+ * parse('12 345,12', { locale: ru });  // returns Decimal(12345.12)
+ *
+ * // Invalid numbers will raise an error
+ *
  * parse('2,109,998', { locale: de });
+ * // Error('2,109,998 is not a properly formatted decimal number')
+ * ```
  *
+ * @param value string to parse
+ * @param options parse options
+ * @return parsed number
  */
 export function parse(
   value: string,
