@@ -161,4 +161,9 @@
 | `ZMW` | Zambian Kwacha |
 
 > #### Sources
-> https://www.currency-iso.org/dam/downloads/lists/list_one.xml > https://www.xe.com/iso4217.php > ISO 4216 data published on 2018-08-29 > Retrieved on 2020-10-13 
+> https://www.currency-iso.org/dam/downloads/lists/list_one.xml
+>
+> https://www.xe.com/iso4217.php
+>
+> ISO 4216 data published on 2018-08-29,
+> retrieved on 2020-10-14

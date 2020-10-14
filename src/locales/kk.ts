@@ -7,7 +7,7 @@
 import { Locale } from '../locale';
 import root from './root';
 
-// Unicode CLDR Version 37, retrieved 2020-10-13
+// Unicode CLDR Version 37, retrieved 2020-10-14
 export const kk = new Locale(
   'kk',
   {

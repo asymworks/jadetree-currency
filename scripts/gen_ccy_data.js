@@ -65,10 +65,12 @@ const md_list_template = `
 <%= currencyTable %>
 
 > #### Sources
-> https://www.currency-iso.org/dam/downloads/lists/list_one.xml \
-> https://www.xe.com/iso4217.php \
-> ISO 4216 data published on <%= datePublished %> \
-> Retrieved on <%= dateRetrieved %> \
+> https://www.currency-iso.org/dam/downloads/lists/list_one.xml
+>
+> https://www.xe.com/iso4217.php
+>
+> ISO 4216 data published on <%= datePublished %>,
+> retrieved on <%= dateRetrieved %>
 `;
 
 async function main(args) {

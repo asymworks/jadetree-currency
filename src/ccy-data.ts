@@ -4,7 +4,7 @@
  * @internal
  */
 
-// ISO 4217 data published 2018-08-29, retrieved 2020-10-13
+// ISO 4217 data published 2018-08-29, retrieved 2020-10-14
 const ccyData: { [key: string]: { n: number; p: number } } = {
   AED: { n: 784, p: 2 },
   AFN: { n: 971, p: 2 },

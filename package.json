@@ -13,7 +13,7 @@
     "build-data:ccy": "node scripts/gen_ccy_data.js -o ./src/ccy-data.ts -d ./docs/data/currency-list.md",
     "build-data:l10n": "node scripts/gen_l10n_data.js -d ./docs/data/locale-list.md ./src/locales",
     "clean": "rm -rf index.js index.*.js index.*.map lib locales",
-    "clean-data": "rm docs/data/currency-list.md docs/data/locale-list.md src/ccy-list.ts src/locales/*.ts",
+    "clean-data": "rm docs/data/currency-list.md docs/data/locale-list.md src/ccy-data.ts src/locales/*.ts",
     "docs:html": "documentation build src/*.ts -f html -o docs --parse-extension ts",
     "docs:md": "documentation build src/*.ts -f md --parse-extension ts",
     "docs:serve": "documentation serve --watch src/*.ts --parse-extension ts",
