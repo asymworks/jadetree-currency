@@ -1,6 +1,6 @@
 {
   "name": "@jadetree/currency",
-  "version": "0.8.8",
+  "version": "0.8.9",
   "description": "Localized Currency Library for Jade Tree",
   "main": "./index.js",
   "module": "lib/index.js",
