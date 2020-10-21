@@ -1,9 +1,10 @@
 {
   "name": "@jadetree/currency",
-  "version": "0.8.9",
+  "version": "0.8.11",
   "description": "Localized Currency Library for Jade Tree",
   "main": "./index.js",
-  "module": "lib/index.js",
+  "module": "lib/index",
+  "typings": "lib/index",
   "repository": "https://github.com/asymworks/jadetree-currency",
   "author": "Jonathan Krauss <jkrauss@asymworks.com>",
   "license": "BSD-3-Clause",
