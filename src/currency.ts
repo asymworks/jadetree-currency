@@ -1,4 +1,4 @@
-import ccyData from './ccy-data';
+import ccyData, { territoryCurrencies } from './ccy-data';
 
 /** @internal */
 interface CurrencyData {
@@ -147,6 +147,15 @@ export class Currency {
    */
   static allCurrencies(): string[] {
     return Object.keys(ccyRegistry);
+  }
+
+  /**
+   * Get the default currency for a country or territory
+   * @param territory ISO3166-1 alpha-2 territory code (e.g. 'US')
+   * @return currency code for the territory or `undefined`
+   */
+  static localCurrency(territory: string): string | undefined {
+    return territoryCurrencies[territory];
   }
 }
 

@@ -129,5 +129,16 @@ describe('Currency', function() {
 
       expect(Currency.allCurrencies().length).to.equal(nCcys + 1);
     });
+
+    it('should provide the default currency for a territory', function() {
+      expect(Currency.localCurrency('AU')).to.equal('AUD');
+      expect(Currency.localCurrency('CA')).to.equal('CAD');
+      expect(Currency.localCurrency('CH')).to.equal('CHF');
+      expect(Currency.localCurrency('DE')).to.equal('EUR');
+      expect(Currency.localCurrency('GB')).to.equal('GBP');
+      expect(Currency.localCurrency('FR')).to.equal('EUR');
+      expect(Currency.localCurrency('NZ')).to.equal('NZD');
+      expect(Currency.localCurrency('US')).to.equal('USD');
+    });
   });
 });

@@ -357,12 +357,6 @@ async function main(args) {
         aliases[lang] = generateLocale({ language, territory });
       }
     });
-    Object.keys(subtags)
-      .filter((key) => key.match(/^und(-[A-Z]{2})?$/))
-      .forEach((key) => {
-        const { language, territory } = parseLocale(subtags[key], '-');
-        aliases[key.replace(/-/mg, '_')] = generateLocale({ language, territory });
-      });
 
     // Write Aliases File
     const aliasTemplate = template(cjs_alias_template);
