@@ -1,3 +1,6 @@
+/* eslint-disable-next-line @typescript-eslint/no-var-requires */
+const localeAliases = require('./locale-aliases');
+
 // String Shims
 const isalpha = (s) => !!s.match(/^[A-Za-z]+$/);
 const isdigit = (s) => !!s.match(/^\d+$/);
@@ -70,5 +73,42 @@ module.exports = {
 
     // eslint-disable-next-line no-alert, object-curly-newline
     return { language, territory, script, variant };
+  },
+  negotiateLocale(
+    preferred,
+    available,
+    separator = '_',
+    aliases = localeAliases
+  ) {
+    /* eslint-disable-next-line unicorn/prefer-set-has */
+    const avail = available.map((s) => s.toLowerCase());
+    /* eslint-disable-next-line unicorn/no-for-loop */
+    for (let i = 0; i < preferred.length; i += 1) {
+      const locale = preferred[i];
+      const ll = locale.toLowerCase();
+      if (avail.includes(ll)) {
+        return locale;
+      }
+
+      if (aliases) {
+        if (Object.prototype.hasOwnProperty.call(aliases, ll)) {
+          let alias = aliases[ll];
+          if (alias) {
+            alias = alias.split('_').join(separator);
+            if (avail.includes(alias.toLowerCase())) {
+              return alias;
+            }
+          }
+        }
+      }
+
+      const parts = locale.split(separator);
+      if (parts && avail.includes(parts[0].toLowerCase())) {
+        return parts[0];
+      }
+    }
+
+    /* eslint-disable-next-line unicorn/no-useless-undefined */
+    return undefined;
   },
 };

@@ -5,7 +5,7 @@
  */
 import { Locale } from '../locale';
 
-// Unicode CLDR Version 37, retrieved 2020-10-14
+// Unicode CLDR Version 37, retrieved 2020-10-23
 export default new Locale('root', {
   d: '.',
   g: ',',

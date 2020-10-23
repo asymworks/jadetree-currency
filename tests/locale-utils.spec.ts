@@ -1,5 +1,5 @@
 import { expect, should } from 'chai';
-import { parseLocale, generateLocale } from '../src/locale-utils';
+import { parseLocale, generateLocale, negotiateLocale} from '../src/locale-utils';
 
 describe('Locale Utilities', function() {
   describe('Locale Tag Parsing', function() {
@@ -99,6 +99,27 @@ describe('Locale Utilities', function() {
         });
       }
       expect(testFn).to.throw();
+    });
+  });
+
+  describe('Locale Negotiation', function() {
+    it('should select "de_DE" for negotiateLocale(["de_DE", "en_US"], ["de_DE", "de_AT"])', function() {
+      expect(negotiateLocale(["de_DE", "en_US"], ["de_DE", "de_AT"])).to.equal("de_DE");
+    });
+    it('should select "en_US" for negotiateLocale(["de_DE", "en_US"], ["en_US", "en_US_POSIX"])', function() {
+      expect(negotiateLocale(["de_DE", "en_US"], ["en_US", "en_US_POSIX"])).to.equal("en_US");
+    });
+    it('should return undefined for negotiateLocale(["zh_CN", "zh_TW"], ["de_DE", "de_AT"])', function() {
+      should().equal(negotiateLocale(["zh_CN", "zh_TW"], ["de_DE", "de_AT"]), undefined);
+    });
+    it('should select "jp_JP" by language for negotiate_locale(["ja", "en_US"], ["ja_JP", "en_US"])', function() {
+      expect(negotiateLocale(["ja", "en_US"], ["ja_JP", "en_US"])).to.equal("ja_JP");
+    });
+    it('should select "nb_NO" by alias for negotiate_locale(["no", "sv"], ["nb_NO", "sv_SE"])', function() {
+      expect(negotiateLocale(["no", "sv"], ["nb_NO", "sv_SE"])).to.equal("nb_NO");
+    });
+    it('should select "en" for negotiateLocale(["de_DE", "en_US"], ["en", "es"])', function() {
+      expect(negotiateLocale(["de_DE", "en_US"], ["en", "es"])).to.equal("en");
     });
   });
 });

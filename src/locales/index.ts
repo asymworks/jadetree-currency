@@ -4,7 +4,7 @@
  * @internal
  */
 
-/* Unicode CLDR Version 37, retrieved 2020-10-14 */
+/* Unicode CLDR Version 37, retrieved 2020-10-23 */
 
 export * from './root';
 export * from './af';
