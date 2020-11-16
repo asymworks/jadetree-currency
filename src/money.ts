@@ -179,6 +179,11 @@ export class Money {
     );
   }
 
+  /** Negate the Money Amount */
+  negate(): Money {
+    return this.multiply(-1);
+  }
+
   /**
    * Allocate Money Evenly into Groups
    * @param ratios ratios to allocate

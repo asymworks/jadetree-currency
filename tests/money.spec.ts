@@ -150,7 +150,16 @@ describe('Money Value Object', function() {
       expect(m1.multiply(1.01).amount).to.deep.equal(new Decimal('1.1211'));
       expect(m2.multiply(1.01).amount).to.deep.equal(new Decimal('1.12'));
       expect(m2.multiply(1.01, Decimal.ROUND_UP).amount).to.deep.equal(new Decimal('1.13'));
-    });it('should support even distribution of positive values', function() {
+    });
+
+    it('should support negation', function() {
+      var m1 = new Money('1.11', 'USD');
+      var m2 = new Money('-1.11', 'USD');
+      expect(m1.negate().amount).to.deep.equal(m2.amount);
+      expect(m2.negate().amount).to.deep.equal(m1.amount);
+    });
+
+    it('should support even distribution of positive values', function() {
       var m1 = new Money('1.12', 'USD');
       var d = m1.distribute(5);
       expect(d).is.an('array');
