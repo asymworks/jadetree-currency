@@ -175,7 +175,8 @@ export class Money {
     return new Money(
       this.amt
         .times(new Decimal(factor.toString()))
-        .todp(this.ccy.precision, roundingMode)
+        .todp(this.ccy.precision, roundingMode),
+      this.currency
     );
   }
 

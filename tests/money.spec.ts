@@ -148,15 +148,22 @@ describe('Money Value Object', function() {
       var m1 = new Money('1.11', 'XXX');
       var m2 = new Money('1.11', 'USD');
       expect(m1.multiply(1.01).amount).to.deep.equal(new Decimal('1.1211'));
+      expect(m1.multiply(1.01).currency).to.deep.equal(m1.currency);
       expect(m2.multiply(1.01).amount).to.deep.equal(new Decimal('1.12'));
+      expect(m2.multiply(1.01).currency).to.deep.equal(m2.currency);
       expect(m2.multiply(1.01, Decimal.ROUND_UP).amount).to.deep.equal(new Decimal('1.13'));
     });
 
     it('should support negation', function() {
       var m1 = new Money('1.11', 'USD');
-      var m2 = new Money('-1.11', 'USD');
-      expect(m1.negate().amount).to.deep.equal(m2.amount);
-      expect(m2.negate().amount).to.deep.equal(m1.amount);
+      var m2 = new Money('-1.11', 'CAD');
+      var m3 = new Money(0, 'GBP');
+      expect(m1.negate().amount).to.deep.equal(new Decimal('-1.11'));
+      expect(m1.negate().currency).to.deep.equal(m1.currency);
+      expect(m2.negate().amount).to.deep.equal(new Decimal('1.11'));
+      expect(m2.negate().currency).to.deep.equal(m2.currency);
+      expect(m3.negate().amount).to.deep.equal(new Decimal(0));
+      expect(m3.negate().currency).to.deep.equal(m3.currency);
     });
 
     it('should support even distribution of positive values', function() {
