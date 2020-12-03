@@ -59,6 +59,12 @@ async function build(options) {
       declarations: false,
     }));
 
+    // Copy Typing for locale-utils.js
+    fs.copyFileSync(
+      './src/locale-utils.d.ts',
+      path.join(path.dirname(packageJson.module), 'locale-utils.d.ts'),
+    );
+
     // Build Library (UMD Bundle)
     await build(configFactoryUMD({
       input: './src/index.ts',
