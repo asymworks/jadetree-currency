@@ -36,7 +36,7 @@
     "cldr-core": "^37.0.0",
     "cldr-numbers-modern": "^37.0.0",
     "cross-env": "^7.0.2",
-    "documentation": "^13.0.2",
+    "documentation": "^13.2.5",
     "eslint": "^7.10.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-config-prettier": "^6.12.0",
