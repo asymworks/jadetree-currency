@@ -95,7 +95,7 @@ export function parse(
 
   // Try to parse as a POSIX number
   try {
-    parsed = new Decimal(s.split(g).join('').split(d).join('.'));
+    parsed = new Decimal(s.trim().split(g).join('').split(d).join('.'));
   } catch {
     throw new Error(`${value} is not a properly formatted decimal number.`);
   }
@@ -105,7 +105,7 @@ export function parse(
     const proper = format(parsed, locale.decimalPattern, { locale });
     if (value !== proper && value.replace(/0*$/, '') !== proper + d) {
       try {
-        parsedAlt = new Decimal(s.split(d).join('').split(g).join('.'));
+        parsedAlt = new Decimal(s.trim().split(d).join('').split(g).join('.'));
       } catch (error) {
         if (error.message && /DecimalError/.test(error.message)) {
           throw new Error(

@@ -92,6 +92,12 @@ describe('Number Parser', function() {
       expect(parse('1.099,98', { locale: de }).toString()).to.equal('1099.98');
       expect(parse('12 345,12', { locale: ru }).toString()).to.equal('12345.12');
       expect(testFn).to.throw(/2,109,998 is not a properly formatted decimal number/);
-    })
+    });
+
+    it('should accept strings with preceeding and trailing spaces', function() {
+      expect(parse('  1,099.98', { locale: en }).toString()).to.equal('1099.98');
+      expect(parse('1,099.98  ', { locale: en }).toString()).to.equal('1099.98');
+      expect(parse('  1,099.98  ', { locale: en }).toString()).to.equal('1099.98');
+    });
   });
 });
