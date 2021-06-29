@@ -22,7 +22,7 @@ var fs = require('fs');
 const { ArgumentParser } = require('argparse');
 const { version } = require('../package.json');
 
-const { generateList } = require('./ccy_list');
+const { generateList } = require('./ccy-list');
 
 async function main(args) {
   const ccyList = await generateList();

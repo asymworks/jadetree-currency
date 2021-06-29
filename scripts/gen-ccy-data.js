@@ -27,7 +27,7 @@ var html_parser = require('node-html-parser');
 var { template } = require('lodash');
 var xml2js = require('xml2js');
 
-const { generateList } = require('./ccy_list');
+const { generateList } = require('./ccy-list');
 const { cldrVersion, loadLocaleData, localCurrencies } = require('./cldr');
 
 const ts_data_template = `/**
@@ -79,7 +79,7 @@ const md_list_template = `
 > retrieved on <%= dateRetrieved %>
 `;
 
-async function main(args) {
+async function main(arguments_) {
   const ccyList = await generateList();
   const localCcy = {};
 
@@ -89,17 +89,16 @@ async function main(args) {
     if (ccyKeys.includes(localCurrencies[country])) {
       localCcy[country] = localCurrencies[country];
     }
-  })
+  });
 
   // Format output data
   let fmtData = '';
-  let fmtList = '';
-  if (args.json) {
+  if (arguments_.json) {
     fmtData = JSON.stringify(ccyList);
   } else {
     const options = {
       datePublished: ccyList.published,
-      dateRetrieved: (new Date()).toISOString().substring(0, 10),
+      dateRetrieved: new Date().toISOString().slice(0, 10),
       currencies: ccyList.currencies,
       localCcy,
       cldrVersion,
@@ -109,42 +108,42 @@ async function main(args) {
   }
 
   // Write output data
-  if (!args.output || args.output === '-') {
+  if (!arguments_.output || arguments_.output === '-') {
     process.stdout.write(`${fmtData}\n`);
   } else {
-    await fs.writeFile(args.output, fmtData, (err) => {
+    fs.writeFile(arguments_.output, fmtData, (err) => {
       if (err) {
         throw err;
       }
-      process.stderr.write(`Wrote currency data to ${args.output}\n`);
+      process.stderr.write(`Wrote currency data to ${arguments_.output}\n`);
     });
   }
 
   // Write output markdown
-  if (args.doc) {
-    const ccyKeys = Object.keys(ccyList.currencies).sort();
-    const enData = loadLocaleData('en', ccyKeys);
+  if (arguments_.doc) {
+    const ccyKeysDoc = Object.keys(ccyList.currencies).sort();
+    const enData = loadLocaleData('en', ccyKeysDoc);
 
-    const ccyTable = ccyKeys
+    const ccyTable = ccyKeysDoc
       .map((ccy) => `| \`${ccy}\` | ${enData.cn[ccy]} |`)
       .join('\n');
 
     const options = {
       datePublished: ccyList.published,
-      dateRetrieved: (new Date()).toISOString().substring(0, 10),
+      dateRetrieved: new Date().toISOString().slice(0, 10),
       currencyTable: ccyTable,
     };
 
     const docData = template(md_list_template)(options);
 
-    if (args.doc === '-') {
+    if (arguments_.doc === '-') {
       process.stdout.write(`${docData}\n`);
     } else {
-      await fs.writeFile(args.doc, docData, (err) => {
-        if (err) {
-          throw err;
+      fs.writeFile(arguments_.doc, docData, (error) => {
+        if (error) {
+          throw error;
         }
-        process.stderr.write(`Wrote documentation data to ${args.doc}\n`);
+        process.stderr.write(`Wrote documentation data to ${arguments_.doc}\n`);
       });
     }
   }
@@ -160,6 +159,4 @@ parser.add_argument('--json', { action: 'store_true', help: 'write data in JSON 
 parser.add_argument('-d', '--doc', { help: 'markdown file with the currency list'});
 parser.add_argument('-o', '--output', { help: 'currency data output file (default writes to STDOUT)', default: '-' });
 
-const args = parser.parse_args();
-
-main(args);
+main(parser.parse_args());

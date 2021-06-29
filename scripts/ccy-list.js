@@ -64,7 +64,7 @@ async function load_currencies() {
  * @return {Object} object mapping currecy code to currency number and precision
  */
 async function load_iso4217() {
-  const url = 'https://www.currency-iso.org/dam/downloads/lists/list_one.xml';
+  const url = 'https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list_one.xml';
   const data = {};
   const iso4217 = await getUrl(url)
     .then((xmlString) => xml2js.parseStringPromise(xmlString));

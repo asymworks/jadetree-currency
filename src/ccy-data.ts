@@ -4,7 +4,7 @@
  * @internal
  */
 
-// ISO 4217 data published 2018-08-29, retrieved 2020-10-23
+// ISO 4217 data published 2018-08-29, retrieved 2021-06-29
 const ccyData: { [key: string]: { n: number; p: number } } = {
   AED: { n: 784, p: 2 },
   AFN: { n: 971, p: 2 },
@@ -164,7 +164,7 @@ const ccyData: { [key: string]: { n: number; p: number } } = {
   XXX: { n: 999, p: 6 },
 };
 
-// Unicode CLDR data version 37, retrieved 2020-10-23
+// Unicode CLDR data version 37, retrieved 2021-06-29
 const territoryCurrencies: { [key: string]: string } = {
   AC: 'SHP',
   AD: 'EUR',

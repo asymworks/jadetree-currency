@@ -31,7 +31,7 @@ var { template } = require('lodash');
 const currencyData = require('cldr-core/supplemental/currencyData.json');
 const likelySubtags = require('cldr-core/supplemental/likelySubtags.json');
 
-const { generateList } = require('./ccy_list');
+const { generateList } = require('./ccy-list');
 const {
   cldrAliases,
   cldrNumbersRoot,

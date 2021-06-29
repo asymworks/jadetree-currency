@@ -4,7 +4,7 @@
  * @internal
  */
 
-/* Unicode CLDR Version 37, retrieved 2020-10-23 */
+/* Unicode CLDR Version 37, retrieved 2021-06-29 */
 
 module.exports = {
   af: 'af_ZA',
