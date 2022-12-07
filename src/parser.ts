@@ -106,8 +106,12 @@ export function parse(
     if (value !== proper && value.replace(/0*$/, '') !== proper + d) {
       try {
         parsedAlt = new Decimal(s.trim().split(d).join('').split(g).join('.'));
-      } catch (error) {
-        if (error.message && /DecimalError/.test(error.message)) {
+      } catch (error: unknown) {
+        if (
+          error instanceof Error &&
+          error.message &&
+          /DecimalError/.test(error.message)
+        ) {
           throw new Error(
             `${value} is not a properly formatted decimal number. Did you mean ${proper}?`
           );
